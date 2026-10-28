@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المُـعَـاوِن | منصة بحثية قانونية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 950: '#060B19', 900: '#0B132B', 800: '#1C2541', gold: '#C5A059' }
+                    },
+                    fontFamily: { sans: ['Cairo', 'sans-serif'], serif: ['Amiri', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <style>body { background-color: #F8FAFC; }</style>
+</head>
+<body class="font-sans text-slate-800 pb-24">
+
+    <!-- الهيدر الأكاديمي/البحثي -->
+    <header class="bg-primary-900 text-white shadow-xl sticky top-0 z-40 border-b-2 border-primary-gold">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-primary-800 border-2 border-primary-gold flex items-center justify-center text-primary-gold text-2xl">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <div>
+                    <h1 class="font-serif text-2xl text-primary-gold tracking-wider">المُـعَـاوِن</h1>
+                    <p class="text-xs text-slate-300">موسوعة بحثية في القانون الإداري والتأديبي</p>
+                </div>
+            </div>
+            <button onclick="toggleAdminPanel()" class="bg-slate-800 hover:bg-slate-700 text-primary-gold px-3 py-2 rounded-lg border border-slate-600 text-sm font-bold flex items-center gap-2">
+                <i class="fa-solid fa-shield-halved"></i> الإدارة
+            </button>
+        </div>
+    </header>
+
+    <!-- واجهة المستخدم (عرض المحتوى السحابي) -->
+    <main class="max-w-7xl mx-auto px-4 mt-8">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h2 class="text-xl font-bold text-primary-900"><i class="fa-solid fa-scale-unbalanced text-primary-gold ml-1"></i> بنك المبادئ والأحكام والدفوع</h2>
+                <button onclick="loadPublicData()" class="text-sm text-slate-500 hover:text-primary-900"><i class="fa-solid fa-rotate"></i> تحديث</button>
+            </div>
+            <div id="publicDataContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="col-span-full text-center text-slate-500 text-sm py-10">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><br>جاري جلب المحتوى من السيرفر السحابي...
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- لوحة تحكم الإدارة (Multi-Admin CRUD) -->
+    <div id="adminPanel" class="fixed inset-0 bg-black/85 z-50 hidden flex justify-center items-start pt-10 px-4 overflow-y-auto">
+        <div class="bg-white rounded-xl w-full max-w-5xl shadow-2xl mb-10 overflow-hidden">
+            <div class="bg-primary-900 text-primary-gold p-4 flex justify-between items-center">
+                <h3 class="font-bold text-lg"><i class="fa-solid fa-gears"></i> لوحة التحكم والتطوير (بوابة المشرفين)</h3>
+                <button onclick="toggleAdminPanel()" class="text-white text-2xl hover:text-red-400">&times;</button>
+            </div>
+            
+            <!-- شاشة تسجيل الدخول -->
+            <div id="adminLogin" class="p-10 text-center">
+                <i class="fa-solid fa-lock text-4xl text-slate-300 mb-4"></i>
+                <p class="mb-4 text-sm font-bold text-slate-700">أدخل كود المشرف للوصول لصلاحيات التعديل:</p>
+                <input type="password" id="adminPin" class="border-2 border-slate-300 rounded-lg p-2 text-center text-lg w-48 mb-4 focus:outline-none focus:border-primary-gold" placeholder="****">
+                <br>
+                <button onclick="loginAdmin()" class="bg-primary-900 hover:bg-primary-800 text-primary-gold font-bold px-8 py-2.5 rounded-lg shadow-md transition">تسجيل الدخول</button>
+            </div>
+
+            <!-- لوحة القيادة -->
+            <div id="adminDashboard" class="hidden p-6">
+                <div class="flex items-center justify-between border-b pb-4 mb-4">
+                    <div class="flex gap-2 text-sm font-bold">
+                        <button onclick="switchAdminTab('tab-content')" id="btn-tab-content" class="adm-tab-btn bg-primary-900 text-white px-4 py-2 rounded-lg">1. إدارة المحتوى (إضافة/تعديل/حذف)</button>
+                        <button onclick="switchAdminTab('tab-users')" id="btn-tab-users" class="adm-tab-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2 rounded-lg">2. إدارة المشرفين</button>
+                        <button onclick="switchAdminTab('tab-logs')" id="btn-tab-logs" class="adm-tab-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2 rounded-lg">3. سجل الرقابة (Audit Log)</button>
+                    </div>
+                    <div class="text-xs font-bold text-primary-900 bg-primary-gold/20 px-3 py-1.5 rounded-full">
+                        مرحباً: <span id="currentAdminNameDisplay"></span>
+                    </div>
+                </div>
+
+                <!-- 1. إدارة المحتوى -->
+                <div id="tab-content" class="admin-tab space-y-6">
+                    <!-- فورم الإضافة / التعديل -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-primary-900 mb-4" id="formTitle"><i class="fa-solid fa-plus-circle"></i> إضافة محتوى جديد (دفع، مبدأ، أو لائحة)</h4>
+                        <input type="hidden" id="editDocId">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                            <div>
+                                <label class="text-xs font-bold mb-1 block">تصنيف المحتوى:</label>
+                                <select id="docCategory" class="w-full border p-2 rounded text-sm bg-white">
+                                    <option value="مبدأ قانوني">مبدأ قانوني / إدارية عليا</option>
+                                    <option value="دفع تأديبي">دفع تأديبي</option>
+                                    <option value="لائحة/قرار">لائحة أو قرار تنفيذي</option>
+                                    <option value="قالب صياغة">قالب صياغة قياسي</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold mb-1 block">عنوان العنصر:</label>
+                                <input type="text" id="docTitle" placeholder="مثال: الدفع بعدم الاختصاص المكاني..." class="w-full border p-2 rounded text-sm">
+                            </div>
+                        </div>
+                        
+                        <label class="text-xs font-bold mb-1 block">النص التفصيلي (الحيثية أو القاعدة):</label>
+                        <textarea id="docContent" rows="4" placeholder="اكتب النص هنا..." class="w-full border p-2 mb-3 rounded text-sm leading-relaxed"></textarea>
+                        
+                        <div class="flex gap-2">
+                            <button onclick="saveDocument()" id="saveBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded font-bold text-sm shadow">حفظ ونشر</button>
+                            <button onclick="resetForm()" class="bg-slate-300 hover:bg-slate-400 text-slate-800 px-5 py-2 rounded font-bold text-sm">إلغاء</button>
+                        </div>
+                    </div>
+
+                    <!-- جدول المحتويات الحالية (للتعديل والحذف) -->
+                    <div>
+                        <h4 class="font-bold text-primary-900 mb-3 border-b pb-2">المحتويات المنشورة حالياً بالموقع:</h4>
+                        <div id="adminDataContainer" class="space-y-2 max-h-80 overflow-y-auto pr-2 custom-scroll">
+                            <!-- يملأ برمجياً -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. إدارة المشرفين -->
+                <div id="tab-users" class="admin-tab hidden space-y-6">
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-sm">
+                        <p class="font-bold text-amber-900 mb-2"><i class="fa-solid fa-users"></i> نظام المشرفين المتعددين</p>
+                        <p class="text-amber-800 text-xs">حساب "أحمد طلعت / 1998" هو حساب المدير العام (Super Admin) ولا يمكن حذفه. يمكنك من هنا إضافة زملاء بصلاحيات دخول لإثراء الموقع.</p>
+                    </div>
+                    
+                    <div class="flex gap-3 items-end bg-slate-50 p-4 rounded-lg border">
+                        <div class="flex-1">
+                            <label class="text-xs font-bold block mb-1">اسم المشرف الجديد:</label>
+                            <input type="text" id="newAdminName" placeholder="مثال: المستشار / محمد" class="w-full border p-2 rounded text-sm">
+                        </div>
+                        <div class="flex-1">
+                            <label class="text-xs font-bold block mb-1">رمز المرور (PIN):</label>
+                            <input type="text" id="newAdminPin" placeholder="أرقام أو حروف" class="w-full border p-2 rounded text-sm">
+                        </div>
+                        <button onclick="addAdmin()" class="bg-primary-900 text-primary-gold px-5 py-2 rounded text-sm font-bold shadow">إضافة مشرف</button>
+                    </div>
+
+                    <div id="adminsListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <!-- المشرفون -->
+                    </div>
+                </div>
+
+                <!-- 3. سجل الرقابة (Audit Log) -->
+                <div id="tab-logs" class="admin-tab hidden">
+                    <div class="flex justify-between items-center mb-3">
+                        <p class="text-sm font-bold text-primary-900">سجل حركات النظام (من أضاف/عدل/حذف وماذا؟)</p>
+                        <button onclick="loadLogs()" class="text-xs bg-slate-200 px-3 py-1 rounded hover:bg-slate-300">تحديث السجل</button>
+                    </div>
+                    <div id="logsContainer" class="space-y-2 h-96 overflow-y-auto text-xs bg-slate-900 text-emerald-400 p-5 rounded-xl font-mono border-2 border-slate-700">
+                        <div class="text-center text-slate-500 py-10">جاري تحميل السجلات...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="fixed bottom-0 left-0 right-0 bg-primary-900 text-white py-2 text-center text-xs border-t border-primary-gold z-30">
+        جميع الحقوق محفوظة &copy; 2026 | إعداد وتطوير: أحمد طلعت الطويل | منصة بحثية قانونية
+    </footer>
+
+    <!-- Firebase v10.13.1 SDK (Modular) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+        // بيانات الربط الدقيقة الخاصة بك
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9aZIqy9gO5lBV399-vlr1VojTlgOoiuU",
+            authDomain: "al-moawen.firebaseapp.com",
+            projectId: "al-moawen",
+            storageBucket: "al-moawen.firebasestorage.app",
+            messagingSenderId: "454323285969",
+            appId: "1:454323285969:web:1f7e00a83d7ef05972baf0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let contentsCache = [];
+
+        // ================= عرض البيانات للعامة =================
+        window.loadPublicData = async function() {
+            const container = document.getElementById('publicDataContainer');
+            container.innerHTML = '<div class="col-span-full text-center text-slate-500"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><br>تحميل...</div>';
+            try {
+                const q = query(collection(db, "legal_content"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+                contentsCache = [];
+                
+                if (snapshot.empty) {
+                    container.innerHTML = "<p class='col-span-full text-center text-slate-500 text-sm py-6'>الموسوعة قيد التحديث... لا توجد بيانات حالياً.</p>";
+                    if(currentUser) renderAdminTable();
+                    return;
+                }
+
+                let html = "";
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    contentsCache.push(data);
+                    
+                    html += `
+                        <div class="p-5 bg-slate-50 border border-slate-200 rounded-xl hover:border-primary-gold transition shadow-sm">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="bg-primary-900 text-primary-gold text-[10px] font-bold px-2 py-0.5 rounded">${data.category}</span>
+                            </div>
+                            <h4 class="font-bold text-primary-900 mb-2">${data.title}</h4>
+                            <p class="text-sm font-serif leading-relaxed text-slate-700 whitespace-pre-line">${data.content}</p>
+                            <div class="mt-3 text-[10px] text-slate-400 border-t pt-2">
+                                أُضيف بواسطة: ${data.addedBy}
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+                
+                if(currentUser) renderAdminTable(); // تحديث جدول الإدارة لو مفتوح
+            } catch (error) {
+                console.error("Firebase Error:", error);
+                container.innerHTML = "<p class='col-span-full text-center text-red-500 text-sm'>تعذر الاتصال بقاعدة البيانات. تأكد من إعدادات Firestore.</p>";
+            }
+        }
+
+        // ================= نظام تسجيل الدخول والمشرفين =================
+        window.loginAdmin = async function() {
+            const pin = document.getElementById('adminPin').value.trim();
+            if(!pin) return;
+
+            // حساب المدير العام الثابت
+            if (pin === "1998") {
+                activateAdminSession("أحمد طلعت الطويل", "SuperAdmin");
+                return;
+            }
+
+            // فحص المشرفين الإضافيين
+            try {
+                const q = query(collection(db, "admins"), where("pin", "==", pin));
+                const snapshot = await getDocs(q);
+                if (!snapshot.empty) {
+                    const adminData = snapshot.docs[0].data();
+                    activateAdminSession(adminData.name, "Admin");
+                } else {
+                    alert("رمز المرور غير صحيح أو الحساب غير موجود.");
+                }
+            } catch(e) {
+                alert("خطأ في الاتصال بقاعدة البيانات.");
+            }
+        }
+
+        function activateAdminSession(name, role) {
+            currentUser = { name, role };
+            document.getElementById('adminLogin').classList.add('hidden');
+            document.getElementById('adminDashboard').classList.remove('hidden');
+            document.getElementById('currentAdminNameDisplay').innerText = name;
+            
+            // تحميل الداتا الخاصة باللوحة
+            renderAdminTable();
+            loadAdmins();
+            loadLogs();
+            logAction("تسجيل دخول", "تم تسجيل الدخول للوحة التحكم");
+        }
+
+        // ================= إدارة المحتوى (إضافة / تعديل / حذف) =================
+        window.saveDocument = async function() {
+            const id = document.getElementById('editDocId').value;
+            const title = document.getElementById('docTitle').value.trim();
+            const content = document.getElementById('docContent').value.trim();
+            const category = document.getElementById('docCategory').value;
+
+            if (!title || !content) return alert("يرجى كتابة العنوان والنص.");
+
+            try {
+                if (id) {
+                    // تعديل
+                    const docRef = doc(db, "legal_content", id);
+                    await updateDoc(docRef, { title, content, category, updatedAt: serverTimestamp() });
+                    await logAction("تعديل محتوى", `قام بتعديل العنصر: ${title}`);
+                    alert("تم تعديل المحتوى بنجاح!");
+                } else {
+                    // إضافة جديدة
+                    await addDoc(collection(db, "legal_content"), {
+                        title, content, category, 
+                        addedBy: currentUser.name, 
+                        createdAt: serverTimestamp()
+                    });
+                    await logAction("إضافة محتوى", `قام بإضافة عنصر جديد: ${title}`);
+                    alert("تم إضافة المحتوى ونشره بالموقع!");
+                }
+                resetForm();
+                loadPublicData(); // يجلب الداتا الجديدة ويعرضها للعامة وللإدارة
+            } catch(e) {
+                console.error(e);
+                alert("حدث خطأ أثناء الحفظ.");
+            }
+        }
+
+        window.editContent = function(id) {
+            const item = contentsCache.find(c => c.id === id);
+            if(!item) return;
+            document.getElementById('editDocId').value = item.id;
+            document.getElementById('docTitle').value = item.title;
+            document.getElementById('docContent').value = item.content;
+            document.getElementById('docCategory').value = item.category;
+            document.getElementById('formTitle').innerHTML = `<i class="fa-solid fa-pen text-amber-600"></i> جاري تعديل: ${item.title}`;
+            document.getElementById('saveBtn').innerText = "حفظ التعديلات";
+            document.getElementById('saveBtn').className = "bg-amber-600 hover:bg-amber-700 text-white px-5 py-2 rounded font-bold text-sm shadow";
+        }
+
+        window.deleteContent = async function(id, title) {
+            if(!confirm(`هل أنت متأكد من حذف القيد/المبدأ: "${title}" نهائياً؟`)) return;
+            try {
+                await deleteDoc(doc(db, "legal_content", id));
+                await logAction("حذف محتوى", `قام بحذف العنصر: ${title}`);
+                alert("تم الحذف بنجاح.");
+                loadPublicData();
+            } catch(e) {
+                alert("خطأ أثناء الحذف.");
+            }
+        }
+
+        function renderAdminTable() {
+            const container = document.getElementById('adminDataContainer');
+            if(!contentsCache.length) {
+                container.innerHTML = "<p class='text-sm text-slate-500'>لا يوجد محتوى حالياً.</p>";
+                return;
+            }
+            container.innerHTML = contentsCache.map(c => `
+                <div class="flex justify-between items-center bg-white p-3 rounded border border-slate-200 hover:bg-slate-50">
+                    <div class="flex-1">
+                        <span class="text-[10px] bg-slate-200 text-slate-600 px-1.5 rounded mr-2">${c.category}</span>
+                        <span class="text-sm font-bold text-primary-900">${c.title}</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="editContent('${c.id}')" class="text-amber-600 hover:bg-amber-100 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-pen"></i> تعديل</button>
+                        <button onclick="deleteContent('${c.id}', '${c.title.replace(/'/g, "\\'")}')" class="text-red-600 hover:bg-red-100 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-trash"></i> حذف</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.resetForm = function() {
+            document.getElementById('editDocId').value = "";
+            document.getElementById('docTitle').value = "";
+            document.getElementById('docContent').value = "";
+            document.getElementById('formTitle').innerHTML = `<i class="fa-solid fa-plus-circle"></i> إضافة محتوى جديد`;
+            document.getElementById('saveBtn').innerText = "حفظ ونشر";
+            document.getElementById('saveBtn').className = "bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded font-bold text-sm shadow";
+        }
+
+        // ================= إدارة المشرفين =================
+        window.addAdmin = async function() {
+            if(currentUser.role !== "SuperAdmin") return alert("فقط المدير العام (أحمد طلعت) يمكنه إضافة مشرفين جدد.");
+            
+            const name = document.getElementById('newAdminName').value.trim();
+            const pin = document.getElementById('newAdminPin').value.trim();
+            if(!name || !pin) return alert("أدخل الاسم ورمز المرور");
+
+            try {
+                await addDoc(collection(db, "admins"), { name, pin, addedAt: serverTimestamp() });
+                await logAction("إضافة مشرف", `قام بإضافة المشرف الجديد: ${name}`);
+                alert("تم إضافة المشرف بنجاح.");
+                document.getElementById('newAdminName').value = "";
+                document.getElementById('newAdminPin').value = "";
+                loadAdmins();
+            } catch(e) {
+                alert("خطأ في إضافة المشرف.");
+            }
+        }
+
+        async function loadAdmins() {
+            const container = document.getElementById('adminsListContainer');
+            const q = query(collection(db, "admins"));
+            const snapshot = await getDocs(q);
+            
+            let html = `
+                <div class="bg-white p-3 rounded-lg border border-primary-gold flex justify-between items-center shadow-sm">
+                    <div>
+                        <span class="block text-sm font-bold text-primary-900"><i class="fa-solid fa-crown text-primary-gold"></i> أحمد طلعت الطويل</span>
+                        <span class="text-[10px] text-slate-500">المدير العام للمنصة (Super Admin)</span>
+                    </div>
+                </div>
+            `;
+            
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                html += `
+                    <div class="bg-white p-3 rounded-lg border flex justify-between items-center shadow-sm">
+                        <div>
+                            <span class="block text-sm font-bold text-slate-800">${data.name}</span>
+                            <span class="text-[10px] text-slate-500">رمز المرور: ${data.pin}</span>
+                        </div>
+                        ${currentUser.role === "SuperAdmin" ? `<button onclick="deleteAdmin('${doc.id}', '${data.name}')" class="text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        window.deleteAdmin = async function(id, name) {
+            if(!confirm(`حذف صلاحيات المشرف: ${name}؟`)) return;
+            try {
+                await deleteDoc(doc(db, "admins", id));
+                await logAction("حذف مشرف", `قام بسحب صلاحيات المشرف: ${name}`);
+                loadAdmins();
+            } catch(e) { alert("خطأ."); }
+        }
+
+        // ================= سجل الرقابة (Audit Log) =================
+        async function logAction(actionType, details) {
+            try {
+                await addDoc(collection(db, "audit_logs"), {
+                    adminName: currentUser.name,
+                    action: actionType,
+                    details: details,
+                    timestamp: serverTimestamp()
+                });
+            } catch(e) { console.error("Log error", e); }
+        }
+
+        window.loadLogs = async function() {
+            const container = document.getElementById('logsContainer');
+            container.innerHTML = "جاري جلب السجلات...";
+            try {
+                const q = query(collection(db, "audit_logs"), orderBy("timestamp", "desc"));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) {
+                    container.innerHTML = "لا توجد حركات مسجلة بعد.";
+                    return;
+                }
+                container.innerHTML = snapshot.docs.map(doc => {
+                    const d = doc.data();
+                    const time = d.timestamp ? d.timestamp.toDate().toLocaleString('ar-EG') : 'جاري المعالجة...';
+                    return `<div class="border-b border-slate-700 pb-2 mb-2">
+                        <span class="text-yellow-400">[${time}]</span> 
+                        <strong class="text-white">${d.adminName}</strong> 
+                        <span class="text-slate-300">| العملية: ${d.action} |</span> 
+                        <span class="text-emerald-300">${d.details}</span>
+                    </div>`;
+                }).join('');
+            } catch(e) {
+                container.innerHTML = "خطأ في جلب السجلات. هل تم إنشاء فهرس (Index) في Firebase؟";
+            }
+        }
+
+        // ================= دوال التحكم في واجهة الإدارة =================
+        window.toggleAdminPanel = () => {
+            document.getElementById('adminPanel').classList.toggle('hidden');
+        }
+        
+        window.switchAdminTab = (tabId) => {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
+            document.querySelectorAll('.adm-tab-btn').forEach(b => {
+                b.classList.remove('bg-primary-900', 'text-white');
+                b.classList.add('bg-slate-100', 'text-slate-700');
+            });
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
+            activeBtn.classList.add('bg-primary-900', 'text-white');
+            
+            if(tabId === 'tab-logs') loadLogs();
+        }
+
+        // تشغيل البداية
+        window.onload = () => {
+            loadPublicData();
+        };
+    </script>
+</body>
+</html>
