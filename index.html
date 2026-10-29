@@ -338,4 +338,308 @@
                         <div class="lg:col-span-2 space-y-2">
                             <label class="block text-xs font-bold text-navy-gold">اكتب ملخص الواقعة والمخالفين والتواريخ:</label>
                             <textarea id="aiCaseInput" rows="3" placeholder="مثال: تقاعس مهندس التنظيم عن اتخاذ الإجراءات حيال بناء بدون ترخيص... أو: قيام عضو لجنة البت بتجزئة التعاقد وعدم رد التأمين المؤقت في الموعد..." 
-                                      class="w-full bg-navy-800/90 text-white placeholder-slate-400 rounded-xl p-3 border border-slate-600 focus:outline-none focus:border-navy-gold text-xs leading-
+                                      class="w-full bg-navy-800/90 text-white placeholder-slate-400 rounded-xl p-3 border border-slate-600 focus:outline-none focus:border-navy-gold text-xs leading-relaxed"></textarea>
+                        </div>
+                        <div class="space-y-3 flex flex-col justify-between">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-300 mb-1">النظام القانوني والتصرف:</label>
+                                <select id="aiLawSystem" class="w-full bg-navy-800 text-white border border-slate-600 rounded-xl p-2.5 text-xs font-bold">
+                                    <option value="civil_81">قانون الخدمة المدنية 81 لسنة 2016 (مساءلة إدارية)</option>
+                                    <option value="civil_court">إحالة للمحكمة المختصة (ق 117/1958 وق 47/1972)</option>
+                                    <option value="contracts_182">مخالفات التعاقدات العامة (ق 182 لسنة 2018 + ق 81/2016)</option>
+                                    <option value="special_cadre">لوائح وكوادر خاصة / إدارة محلية (م 27 ق 43/1979)</option>
+                                </select>
+                            </div>
+                            <button onclick="generateWithAI()" id="aiGenerateBtn" class="w-full bg-navy-gold hover:bg-yellow-500 text-navy-950 font-extrabold py-3 rounded-xl text-xs shadow-lg transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> توليد الصياغة ومواد الإسناد
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- القوالب الجاهزة للقيود والديباجات الإجرائية -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-3">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <h3 class="font-bold text-navy-900 text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-sliders text-navy-gold"></i> القوالب والديباجات القياسية
+                            </h3>
+                            <div class="flex gap-1">
+                                <button onclick="openItemEditor('qayd')" class="adm-add-btn hidden bg-emerald-600 text-white px-2 py-1 rounded text-[11px] font-bold">+ قالب</button>
+                                <button onclick="editCurrentQayd()" class="adm-edit-btn hidden bg-amber-500 text-white px-2 py-1 rounded text-[11px]"><i class="fa-solid fa-pen"></i></button>
+                                <button onclick="deleteCurrentQayd()" class="adm-del-btn hidden bg-red-600 text-white px-2 py-1 rounded text-[11px]"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">اختر القالب أو النموذج الإجرائي:</label>
+                            <select id="qaydSelector" onchange="generateQayd()" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-bold text-navy-900"></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">اسم المخالف وصفته ودرجته ورقمه القومي:</label>
+                            <input type="text" id="q_name" oninput="generateQayd()" placeholder="الاسم / الوظيفة / الدرجة المالية / الرقم القومي..." class="w-full border border-slate-300 rounded-lg p-2 text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">الفترة الزمنية / تاريخ الواقعة:</label>
+                            <input type="text" id="q_date" oninput="generateQayd()" placeholder="مثال: خلال الفترة من ... حتى ... (أو اعتباراً من ...)" class="w-full border border-slate-300 rounded-lg p-2 text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">بيان الواقعة / العملية / المستند:</label>
+                            <input type="text" id="q_property" oninput="generateQayd()" placeholder="تفصيل الواقعة أو رقم المتغير أو العملية..." class="w-full border border-slate-300 rounded-lg p-2 text-xs">
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                                <h3 class="font-bold text-navy-900 text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-file-signature text-navy-gold"></i> النص القانوني المنضبط (قابل للتعديل المباشر)
+                                </h3>
+                                <span id="qaydSectorBadge" class="bg-navy-900 text-navy-gold text-xs font-bold px-2.5 py-0.5 rounded"></span>
+                            </div>
+                            <div id="qaydOutput" contenteditable="true" class="bg-slate-50 p-5 rounded-xl border-2 border-dashed border-slate-300 leading-relaxed text-slate-800 font-serif text-lg whitespace-pre-line focus:outline-none focus:border-navy-gold"></div>
+                        </div>
+
+                        <div class="mt-5 flex flex-wrap gap-2 justify-end border-t pt-4">
+                            <button onclick="copyText('qaydOutput')" class="bg-navy-900 hover:bg-navy-800 text-white font-bold px-4 py-2 rounded-lg text-xs flex items-center gap-1.5 shadow">
+                                <i class="fa-regular fa-copy text-navy-gold"></i> نسخ الصياغة
+                            </button>
+                            <button onclick="addToBasket('قيد ووصف / نموذج', document.getElementById('qaydOutput').innerText)" class="bg-navy-gold hover:bg-yellow-500 text-navy-950 font-extrabold px-4 py-2 rounded-lg text-xs flex items-center gap-1.5 shadow">
+                                <i class="fa-solid fa-plus"></i> إضافة للمسودة المجمعة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================================================================= -->
+    <!-- 5. النوافذ المنبثقة: (قارئ Google Drive + بوابة الأعضاء + لوحة الإدارة الـ 5 غرف + المحرر) -->
+    <!-- ========================================================================================= -->
+
+    <!-- أ. نافذة القارئ التفاعلي المدمج لملفات المكتبة (Google Drive Embedded Preview) -->
+    <div id="drivePreviewModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-center justify-center p-3 sm:p-6">
+        <div class="bg-white rounded-2xl max-w-5xl w-full h-[90vh] flex flex-col shadow-2xl border-2 border-navy-gold overflow-hidden">
+            <div class="bg-navy-900 text-white p-3.5 flex justify-between items-center border-b border-navy-gold">
+                <div>
+                    <h3 id="previewModalTitle" class="font-bold text-navy-gold text-sm"></h3>
+                    <p id="previewModalAuthor" class="text-[11px] text-slate-300"></p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a id="previewExternalLink" href="#" target="_blank" class="bg-navy-gold text-navy-950 font-extrabold px-3 py-1 rounded text-xs">
+                        <i class="fa-solid fa-up-right-from-square ml-1"></i> فتح / تحميل من المصدر
+                    </a>
+                    <button onclick="closeDrivePreview()" class="text-slate-300 hover:text-white text-2xl px-2">&times;</button>
+                </div>
+            </div>
+            <div id="previewModalContent" class="flex-1 bg-slate-100 overflow-y-auto custom-scroll"></div>
+        </div>
+    </div>
+
+    <!-- ب. نافذة تسجيل ودخول الأعضاء (منفصلة في الهيدر وتدعم كود VIP والموافقة اليدوية) -->
+    <div id="memberModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border-2 border-navy-gold">
+            <div class="bg-navy-900 text-white p-4 flex justify-between items-center border-b border-navy-gold">
+                <h3 class="font-bold text-navy-gold text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield"></i> بوابة الأعضاء المعتمدين
+                </h3>
+                <button onclick="toggleModal('memberModal')" class="text-slate-300 hover:text-white text-xl">&times;</button>
+            </div>
+
+            <div class="grid grid-cols-2 bg-slate-100 p-1.5 border-b text-xs font-bold">
+                <button onclick="switchMemberAuthTab('login')" id="tabBtnLogin" class="py-2 rounded-lg bg-navy-900 text-navy-gold">تسجيل الدخول</button>
+                <button onclick="switchMemberAuthTab('register')" id="tabBtnRegister" class="py-2 rounded-lg text-slate-600">طلب عضوية جديدة</button>
+            </div>
+
+            <div id="memberAlertBox" class="hidden m-4 p-3 rounded-xl text-xs font-bold"></div>
+
+            <!-- فورم الدخول -->
+            <div id="memberLoginForm" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">اسم المستخدم (Username):</label>
+                    <input type="text" id="mem_login_user" placeholder="أدخل اسم المستخدم" class="w-full border rounded-xl p-2.5 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">الرقم السري (PIN / Password):</label>
+                    <input type="password" id="mem_login_pin" onkeyup="if(event.key==='Enter') submitMemberLogin()" placeholder="••••" class="w-full border rounded-xl p-2.5 text-sm">
+                </div>
+                <button onclick="submitMemberLogin()" class="w-full bg-navy-900 hover:bg-navy-800 text-navy-gold font-extrabold py-2.5 rounded-xl text-sm shadow">
+                    دخول للحساب وتفعيل الأدوات الكاملة
+                </button>
+            </div>
+
+            <!-- فورم تسجيل عضوية جديدة -->
+            <div id="memberRegisterForm" class="p-6 space-y-3 hidden">
+                <p class="text-[11px] text-slate-500 bg-slate-50 p-2.5 rounded-lg border">
+                    يتم تفعيل الحساب بعد مراجعة الإدارة للصفة، أو يتفعل <strong>فوراً في نفس اللحظة</strong> إذا كان لديك كود دعوة مباشر (VIP Code).
+                </p>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">الاسم رباعياً:</label>
+                    <input type="text" id="mem_reg_name" placeholder="الاسم الكامل للتحقق" class="w-full border rounded-lg p-2 text-xs">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">الصفة / الدرجة:</label>
+                        <input type="text" id="mem_reg_title" placeholder="الدرجة الوظيفية" class="w-full border rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">جهة العمل / المكتب:</label>
+                        <input type="text" id="mem_reg_work" placeholder="جهة العمل" class="w-full border rounded-lg p-2 text-xs">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">رقم الهاتف (واتساب):</label>
+                    <input type="tel" id="mem_reg_phone" placeholder="010xxxxxxxx" class="w-full border rounded-lg p-2 text-xs">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">اسم المستخدم للدخول:</label>
+                        <input type="text" id="mem_reg_user" placeholder="حروف/أرقام" class="w-full border rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">الرقم السري:</label>
+                        <input type="password" id="mem_reg_pin" placeholder="اختر رقماً سرياً" class="w-full border rounded-lg p-2 text-xs">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-emerald-800 mb-1">كود التفعيل الفوري (VIP Code - اختياري):</label>
+                    <input type="text" id="mem_reg_vip" placeholder="إن وجد لديك كود دعوة مباشر اكتبه هنا" class="w-full bg-emerald-50 border border-emerald-300 rounded-lg p-2 text-xs">
+                </div>
+                <button onclick="submitMemberRegister()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-2.5 rounded-xl text-sm shadow">
+                    تسجيل العضوية
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ج. لوحة الإدارة المركزية الشاملة (5 غرف تحكم كاملة) -->
+    <div id="adminModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-center justify-center p-2 sm:p-5">
+        <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[94vh] flex flex-col shadow-2xl border-2 border-navy-gold overflow-hidden">
+            
+            <div class="bg-navy-900 text-white p-4 flex justify-between items-center border-b border-navy-gold">
+                <div>
+                    <h3 class="font-bold text-navy-gold text-base flex items-center gap-2">
+                        <i class="fa-solid fa-gears"></i> لوحة الإدارة الشاملة والتحكم السحابي (Multi-Admin CRUD)
+                    </h3>
+                    <p class="text-[11px] text-slate-300">اعتماد الأعضاء وترقية المشرفين، إدارة المكتبة وروابط Google Drive، تطوير المحتوى، وسجل الرقابة</p>
+                </div>
+                <button onclick="toggleModal('adminModal')" class="text-slate-300 hover:text-white text-2xl">&times;</button>
+            </div>
+
+            <!-- شريط غرف التحكم الخمس -->
+            <div class="bg-slate-100 p-2 border-b flex flex-wrap gap-1.5 text-xs font-bold">
+                <button onclick="switchAdminRoom('room-members')" id="admTab-members" class="adm-room-btn adm-nav-active px-3 py-2 rounded-lg flex items-center gap-1.5">
+                    <i class="fa-solid fa-users-gear"></i> 1. الأعضاء والاعتماد والترقيات (<span id="admPendingMembersBadge" class="bg-red-600 text-white px-1.5 rounded-full text-[10px]">0</span>)
+                </button>
+                <button onclick="switchAdminRoom('room-library')" id="admTab-library" class="adm-room-btn bg-white text-slate-700 px-3 py-2 rounded-lg border flex items-center gap-1.5">
+                    <i class="fa-solid fa-book-atlas text-amber-600"></i> 2. إدارة المكتبة وروابط Drive
+                </button>
+                <button onclick="switchAdminRoom('room-crud')" id="admTab-crud" class="adm-room-btn bg-white text-slate-700 px-3 py-2 rounded-lg border flex items-center gap-1.5">
+                    <i class="fa-solid fa-layer-group text-emerald-600"></i> 3. إضافة وتطوير أقسام الموسوعة
+                </button>
+                <button onclick="switchAdminRoom('room-contribs')" id="admTab-contribs" class="adm-room-btn bg-white text-slate-700 px-3 py-2 rounded-lg border flex items-center gap-1.5">
+                    <i class="fa-solid fa-inbox text-sky-600"></i> 4. المساهمات المعلقة (<span id="admPendingContribsBadge">0</span>)
+                </button>
+                <button onclick="switchAdminRoom('room-logs')" id="admTab-logs" class="adm-room-btn bg-white text-slate-700 px-3 py-2 rounded-lg border flex items-center gap-1.5">
+                    <i class="fa-solid fa-shield-halved text-purple-600"></i> 5. سجل الرقابة وإعدادات الـ AI
+                </button>
+            </div>
+
+            <div class="p-5 overflow-y-auto flex-1 custom-scroll">
+
+                <!-- الغرفة 1: الأعضاء والاعتماد وترقية الصلاحيات -->
+                <div id="room-members" class="adm-room space-y-4">
+                    <div class="bg-amber-50 border border-amber-300 p-3 rounded-xl text-xs text-amber-950 flex flex-wrap justify-between items-center gap-2">
+                        <span><i class="fa-solid fa-user-check text-amber-600 ml-1"></i> <strong>التحكم الكامل في الأعضاء:</strong> يمكنك تفعيل الحسابات المعلقة بعد التأكد من الصفة، أو ترقية أي عضو إلى (مشرف) وتحديد صلاحياته بدقة.</span>
+                    </div>
+                    <div class="overflow-x-auto border rounded-xl">
+                        <table class="w-full text-right text-xs">
+                            <thead class="bg-navy-900 text-navy-gold">
+                                <tr>
+                                    <th class="p-3">العضو والصفة وجهة العمل</th>
+                                    <th class="p-3">بيانات التواصل والدخول</th>
+                                    <th class="p-3">الحالة</th>
+                                    <th class="p-3">الرتبة وتفويض الصلاحيات</th>
+                                    <th class="p-3 text-center">إجراءات المدير</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admMembersTableBody" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- الغرفة 2: إدارة المكتبة الرقمية وروابط Google Drive -->
+                <div id="room-library" class="adm-room hidden space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border flex flex-wrap justify-between items-center gap-3">
+                        <div>
+                            <h4 class="font-bold text-navy-900 text-sm">إضافة المؤلفات، الكتب الدورية، والملفات عبر روابط Google Drive</h4>
+                            <p class="text-xs text-slate-500">ضع أي رابط مشاركة من جوجل درايف، وسيقوم الموقع بتحويله تلقائياً لقارئ كتاب مدمج داخل الصفحة مع توثيق اسم المستشار المُهدي أو المؤلف.</p>
+                        </div>
+                        <button onclick="openLibraryEditor()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs shadow">
+                            + إضافة كتاب / كتاب دوري جديد
+                        </button>
+                    </div>
+                    <div id="admLibraryList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                </div>
+
+                <!-- الغرفة 3: الإضافة والتطوير الشامل لأقسام الموسوعة -->
+                <div id="room-crud" class="adm-room hidden space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-4 bg-slate-50 rounded-xl border space-y-2">
+                            <h4 class="font-bold text-navy-900 text-sm"><i class="fa-solid fa-gavel text-navy-gold ml-1"></i> موسوعة الحيثيات والدفوع</h4>
+                            <p class="text-xs text-slate-500">إضافة حيثية حفظ، ثبوت، أو رد قياسي على دفع مع سنده التشريعي.</p>
+                            <button onclick="openItemEditor('defense')" class="w-full bg-navy-900 text-navy-gold font-bold py-2 rounded-lg text-xs">+ إضافة حيثية أو دفع</button>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-xl border space-y-2">
+                            <h4 class="font-bold text-navy-900 text-sm"><i class="fa-solid fa-list-check text-emerald-600 ml-1"></i> قوائم الفحص والضوابط</h4>
+                            <p class="text-xs text-slate-500">إضافة قائمة استقصاء جديدة شاملة المستندات، الأسئلة، والوقاية من المآخذ.</p>
+                            <button onclick="openItemEditor('checklist')" class="w-full bg-navy-900 text-navy-gold font-bold py-2 rounded-lg text-xs">+ إضافة قائمة فحص</button>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-xl border space-y-2">
+                            <h4 class="font-bold text-navy-900 text-sm"><i class="fa-solid fa-wand-magic-sparkles text-amber-600 ml-1"></i> قوالب القيود والديباجات</h4>
+                            <p class="text-xs text-slate-500">إضافة قالب وصف ومواد إسناد أو نموذج محضر إجرائي جديد.</p>
+                            <button onclick="openItemEditor('qayd')" class="w-full bg-navy-900 text-navy-gold font-bold py-2 rounded-lg text-xs">+ إضافة قالب قيد / نموذج</button>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-xl border space-y-2">
+                            <h4 class="font-bold text-navy-900 text-sm"><i class="fa-solid fa-scale-unbalanced text-rose-600 ml-1"></i> التشريعات وفتاوى الخدمة المدنية</h4>
+                            <p class="text-xs text-slate-500">إضافة مبدأ إفتائي للجمعية العمومية أو نص من قانون التعاقدات أو الخدمة المدنية.</p>
+                            <button onclick="openItemEditor('regulation')" class="w-full bg-navy-900 text-navy-gold font-bold py-2 rounded-lg text-xs">+ إضافة تشريع أو فتوى</button>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-xl border space-y-2">
+                            <h4 class="font-bold text-navy-900 text-sm"><i class="fa-solid fa-filter text-blue-600 ml-1"></i> قواعد الاختصاص والسقوط</h4>
+                            <p class="text-xs text-slate-500">إضافة ضابط اختصاص ولائي/محلي أو قيد طلب/إذن أو مبدأ تقادم.</p>
+                            <button onclick="openItemEditor('jurisdiction')" class="w-full bg-navy-900 text-navy-gold font-bold py-2 rounded-lg text-xs">+ إضافة قاعدة اختصاص</button>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-xl border space-y-2">
+                            <h4 class="font-bold text-navy-900 text-sm"><i class="fa-solid fa-folder-plus text-purple-600 ml-1"></i> إدارة شريط القطاعات</h4>
+                            <p class="text-xs text-slate-500">إضافة قطاع تخصصي جديد أو حذف قطاع من الشريط العلوي.</p>
+                            <button onclick="openSectorManager()" class="w-full bg-navy-900 text-navy-gold font-bold py-2 rounded-lg text-xs">فتح مدير القطاعات</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الغرفة 4: المساهمات المعلقة -->
+                <div id="room-contribs" class="adm-room hidden space-y-3">
+                    <div id="admPendingContribsList" class="space-y-3"></div>
+                </div>
+
+                <!-- الغرفة 5: سجل الرقابة السحابي + إعدادات الذكاء الاصطناعي وكود الدعوة -->
+                <div id="room-logs" class="adm-room hidden space-y-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-50 rounded-xl border space-y-2">
+                            <h4 class="font-bold text-navy-900 text-xs"><i class="fa-solid fa-brain text-indigo-600 ml-1"></i> مفتاح الذكاء الاصطناعي (Google Gemini API Key):</h4>
+                            <input type="password" id="cfg_gemini_key" placeholder="AIzaSy..." class="w-full border rounded-lg p-2 text-xs font-mono bg-white">
+                            <button onclick="savePlatformSettings()" class="bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold">حفظ وتفعيل المفتاح</button>
+                        </div>
+                        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 space-y-2">
+                            <h4 class="font-bold text-emerald-950 text-xs"><i class="fa-solid fa-ticket text-emerald-600 ml-1"></i> كود التفعيل الفوري للأعضاء الموثوقين (VIP Code):</h4>
+                            <input type="text" id="cfg_invite_code" placeholder="VIP2026" class="w-full border border-emerald-300 rounded-lg p-2 text-xs font-bold bg-white">
+                            <button onclick="savePlatformSettings()" class="bg-emerald-700 text-white px-4 py-1.5 rounded-lg text-xs font-bold">تحديث كود الدعوة</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex flex-wrap justify-between items-center gap-2">
+                            <h4 class="font-bold text-navy-900 text-xs">سجل الرقابة الس
