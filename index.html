@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المُـعَـاوِن | البوابة البحثية للعلوم الإدارية والوظيفية</title>
+    <title id="siteMainTitle">المُـعَـاوِن | البوابة البحثية للعلوم الإدارية والوظيفية</title>
     <!--
         ===================================================================
         Digital Signature & Core Architecture: Ahmed Talaat El-Tawil
-        System Version: 5.0 Hybrid Cloud Edition (Firebase + Gemini 1.5 Flash)
+        System Version: 6.5 Ultimate Full Hybrid Dynamic Edition (Firebase + Gemini 1.5 Flash)
         ===================================================================
     -->
     <meta name="author" content="AT-Legal-Tech-Core">
@@ -65,7 +65,7 @@
 </head>
 <body class="font-sans text-slate-800 pb-24">
 
-    <!-- 1. الهيدر الرئيسي (الأزرار الأربعة المنفصلة: دخول الأعضاء + مساهمة + المسودة + الإدارة) -->
+    <!-- 1. الهيدر الرئيسي الديناميكي -->
     <header class="bg-judicial-900 text-white shadow-xl sticky top-0 z-40 border-b-2 border-judicial-gold">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
             
@@ -75,18 +75,18 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="font-serif text-2xl tracking-wide text-judicial-gold">المُـعَـاوِن</h1>
+                        <h1 id="headerBrandTitle" class="font-serif text-2xl tracking-wide text-judicial-gold">المُـعَـاوِن</h1>
                         <span id="cloudStatusBadge" class="bg-emerald-900/80 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> متصل سحابياً
                         </span>
                     </div>
-                    <p class="text-[11px] text-slate-300">البوابة البحثية للعلوم الإدارية والوظيفية وصياغة القرارات</p>
+                    <p id="headerBrandSub" class="text-[11px] text-slate-300">البوابة البحثية للعلوم الإدارية والوظيفية وصياغة القرارات</p>
                 </div>
             </div>
 
             <div class="flex-1 max-w-sm mx-2 hidden lg:block">
                 <div class="relative">
-                    <input type="text" id="globalSearch" oninput="handleGlobalSearch()" placeholder="ابحث في الكتب، الفتاوى، الحيثيات، التعاقدات..." 
+                    <input type="text" id="globalSearch" oninput="handleGlobalSearch()" placeholder="ابحث في الموسوعة، الحيثيات، النماذج..." 
                            class="w-full bg-judicial-800 text-white placeholder-slate-400 rounded-lg py-1.5 pr-9 pl-3 border border-slate-600 focus:outline-none focus:border-judicial-gold text-xs">
                     <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-judicial-gold text-xs"></i>
                 </div>
@@ -118,12 +118,12 @@
         </div>
     </header>
 
-    <!-- شريط حالة العضو -->
+    <!-- شريط حالة العضو والصفة الحقيقية -->
     <div id="userStatusBar" class="hidden bg-gradient-to-r from-emerald-950 via-judicial-900 to-emerald-950 text-white px-4 py-2 text-xs border-b border-emerald-500/40 shadow">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
             <div class="flex items-center gap-2">
                 <span id="activeRoleBadge" class="bg-judicial-gold text-judicial-950 font-extrabold px-2.5 py-0.5 rounded-full text-[11px]"></span>
-                <span>مرحباً بك: <strong id="activeUserName" class="text-judicial-gold"></strong> (<span id="activeUserTitle" class="text-slate-300"></span>)</span>
+                <span>مرحباً بك: <strong id="activeUserName" class="text-judicial-gold"></strong> (<span id="activeUserTitle" class="text-slate-300 font-bold"></span> - <span id="activeUserWorkplace" class="text-emerald-300"></span>)</span>
             </div>
             <div class="flex items-center gap-2">
                 <button onclick="toggleModal('adminModal')" class="bg-judicial-gold text-judicial-950 font-extrabold px-3 py-1 rounded shadow hover:bg-yellow-500 transition">
@@ -146,40 +146,36 @@
         </div>
     </div>
 
-    <!-- 3. شريط الأقسام الستة الرئيسية -->
+    <!-- 3. شريط الأقسام الخمسة الرئيسية -->
     <div class="max-w-7xl mx-auto px-4 mt-5">
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 bg-white p-2 rounded-xl shadow-sm border border-slate-200">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-2 bg-white p-2 rounded-xl shadow-sm border border-slate-200">
             <button onclick="switchTab('tab-library')" id="btn-tab-library" class="tab-btn tab-active py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition">
                 <i class="fa-solid fa-book-atlas"></i>
-                <span>1. المكتبة والمؤلفات</span>
-            </button>
-            <button onclick="switchTab('tab-jurisdiction')" id="btn-tab-jurisdiction" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition">
-                <i class="fa-solid fa-scale-unbalanced"></i>
-                <span>2. الاختصاص والسقوط</span>
-            </button>
-            <button onclick="switchTab('tab-regulations')" id="btn-tab-regulations" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition">
-                <i class="fa-solid fa-file-contract"></i>
-                <span>3. التشريعات والفتاوى</span>
+                <span id="tabName-library">1. المكتبة والمؤلفات</span>
             </button>
             <button onclick="switchTab('tab-defenses')" id="btn-tab-defenses" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition">
                 <i class="fa-solid fa-gavel"></i>
-                <span>4. الحيثيات والدفوع</span>
+                <span id="tabName-defenses">2. الحيثيات والدفوع</span>
             </button>
             <button onclick="switchTab('tab-checklists')" id="btn-tab-checklists" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition">
                 <i class="fa-solid fa-list-check"></i>
-                <span>5. قوائم الفحص 🔒</span>
+                <span id="tabName-checklists">3. قوائم الفحص 🔒</span>
             </button>
-            <button onclick="switchTab('tab-qayds')" id="btn-tab-qayds" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition">
+            <button onclick="switchTab('tab-forms')" id="btn-tab-forms" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition">
+                <i class="fa-solid fa-file-lines"></i>
+                <span id="tabName-forms">4. النماذج الإجرائية 🔒</span>
+            </button>
+            <button onclick="switchTab('tab-qayds')" id="btn-tab-qayds" class="tab-btn text-slate-600 hover:bg-slate-100 py-2.5 px-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition col-span-2 md:col-span-1">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <span>6. المُصيغ الذكي AI 🔒</span>
+                <span id="tabName-qayds">5. المصيغ والقيود AI 🔒</span>
             </button>
         </div>
     </div>
 
-    <!-- 4. محتوى الأقسام -->
+    <!-- 4. محتوى الأقسام الخمسة -->
     <main class="max-w-7xl mx-auto px-4 mt-5">
 
-        <!-- القسم 1: المكتبة الرقمية -->
+        <!-- القسم 1: المكتبة الرقمية (متاح للعامة - Google Drive) -->
         <section id="tab-library" class="tab-content space-y-4">
             <div class="bg-gradient-to-l from-judicial-950 via-judicial-900 to-judicial-800 p-5 rounded-2xl text-white shadow-lg border border-judicial-gold/60 flex flex-wrap justify-between items-center gap-4">
                 <div>
@@ -202,36 +198,12 @@
             <div id="libraryContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
         </section>
 
-        <!-- القسم 2: الاختصاص والسقوط -->
-        <section id="tab-jurisdiction" class="tab-content hidden space-y-4">
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap justify-between items-center gap-3">
-                <div>
-                    <h2 class="text-base font-bold text-judicial-900">قواعد الاختصاص الولائي، الطلب والإذن، ومسقطات المساءلة</h2>
-                    <p class="text-xs text-slate-500">مرجع سريع وفقاً لقانون الخدمة المدنية رقم 81 لسنة 2016 وأحدث التعليمات القضائية.</p>
-                </div>
-                <button onclick="openItemEditor('jurisdiction')" class="admin-add-btn hidden bg-emerald-600 text-white px-3 py-2 rounded-lg text-xs font-bold">+ إضافة قاعدة</button>
-            </div>
-            <div id="jurisdictionContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-        </section>
-
-        <!-- القسم 3: التشريعات والفتاوى -->
-        <section id="tab-regulations" class="tab-content hidden space-y-4">
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap justify-between items-center gap-3">
-                <div>
-                    <h2 class="text-base font-bold text-judicial-900">النصوص التشريعية الحاكمة، فتاوى الجمعية العمومية، وضوابط التصرف</h2>
-                    <p class="text-xs text-slate-500">يشمل أحكام قانون الخدمة المدنية، قانون التعاقدات العامة 182 لسنة 2018، وفتاوى مجلس الدولة.</p>
-                </div>
-                <button onclick="openItemEditor('regulation')" class="admin-add-btn hidden bg-emerald-600 text-white px-3 py-2 rounded-lg text-xs font-bold">+ إضافة تشريع/فتوى</button>
-            </div>
-            <div id="regulationsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-        </section>
-
-        <!-- القسم 4: الحيثيات والدفوع -->
+        <!-- القسم 2: الحيثيات والدفوع (نظام هجين: معاينة للعامة وكامل للأعضاء) -->
         <section id="tab-defenses" class="tab-content hidden space-y-4">
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap justify-between items-center gap-3">
                 <div>
                     <h2 class="text-base font-bold text-judicial-900">موسوعة الحيثيات القياسية، الرد على الدفوع، وصيغ الحفظ والثبوت</h2>
-                    <p class="text-xs text-slate-500">صياغات رصينة محدثة وفقاً لأحكام المحكمة الإدارية العليا.</p>
+                    <p class="text-xs text-slate-500">صياغات رصينة محدثة وفقاً لأحكام المحكمة الإدارية العليا والتعليمات القضائية.</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <select id="defCategoryFilter" onchange="renderDefensesSection()" class="bg-slate-100 border border-slate-300 text-judicial-900 rounded-lg px-3 py-1.5 text-xs font-bold">
@@ -240,20 +212,22 @@
                         <option value="حيثيات الثبوت والرد على الدفوع">حيثيات الثبوت والرد على الدفوع</option>
                         <option value="مبدأ إدارية عليا / فتوى">أحكام إدارية عليا وفتاوى</option>
                     </select>
-                    <button onclick="openItemEditor('defense')" class="admin-add-btn hidden bg-emerald-600 text-white px-3 py-2 rounded-lg text-xs font-bold">+ حيثية</button>
+                    <button onclick="openItemEditor('defense')" class="admin-add-btn hidden bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg text-xs font-bold shadow flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> إضافة حيثية / دفع
+                    </button>
                 </div>
             </div>
             <div id="defensesContainer" class="grid grid-cols-1 gap-4"></div>
         </section>
 
-        <!-- القسم 5: قوائم الفحص (مغلق للأعضاء فقط) -->
+        <!-- القسم 3: قوائم الفحص وتجنب المآخذ (مغلق للأعضاء فقط) -->
         <section id="tab-checklists" class="tab-content hidden space-y-5">
             <div id="checklistsLockedBanner" class="hidden bg-white p-8 rounded-2xl shadow-lg border-2 border-judicial-gold text-center space-y-4">
                 <div class="w-16 h-16 rounded-full bg-amber-50 border-2 border-judicial-gold text-judicial-gold text-2xl flex items-center justify-center mx-auto">
                     <i class="fa-solid fa-lock"></i>
                 </div>
-                <h3 class="text-lg font-bold text-judicial-900">قسم قوائم الفحص والاستقصاء مخصص للأعضاء المعتمدين</h3>
-                <p class="text-xs text-slate-600 max-w-xl mx-auto leading-relaxed">يرجى تسجيل الدخول أو إدخال كود الدعوة الفوري (VIP) لإتاحة قوائم المستندات وأسئلة الشهود وضوابط تجنب المآخذ الفنية.</p>
+                <h3 class="text-lg font-bold text-judicial-900">قسم قوائم الفحص وتجنب المآخذ الفنية مخصص للأعضاء المعتمدين</h3>
+                <p class="text-xs text-slate-600 max-w-xl mx-auto leading-relaxed">يرجى تسجيل الدخول أو إدخال كود الدعوة الفوري (VIP) لإتاحة قوائم المستندات وأسئلة الشهود ومواجهة المخالفين.</p>
                 <button onclick="openMemberAuthModal()" class="bg-judicial-900 text-judicial-gold font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-md">تسجيل الدخول / كود VIP</button>
             </div>
             <div id="checklistsUnlockedContent" class="space-y-5">
@@ -263,8 +237,10 @@
                         <p class="text-xs text-slate-500">مستندات الضم، أسئلة الشهود والمواجهة، وتنبيهات التفتيش الفني.</p>
                     </div>
                     <div class="flex items-center gap-2 flex-1 max-w-xl">
-                        <select id="checklistSelector" onchange="renderSelectedChecklist()" class="w-full bg-slate-50 border-2 border-judicial-800 text-judicial-900 font-bold rounded-lg px-3 py-2 text-xs"></select>
-                        <button onclick="openItemEditor('checklist')" class="admin-add-btn hidden bg-emerald-600 text-white px-3 py-2 rounded-lg text-xs font-bold">+ قائمة</button>
+                        <select id="checklistSelector" onchange="renderSelectedChecklist()" class="w-full bg-slate-50 border-2 border-judicial-800 text-judicial-gold font-bold rounded-lg px-3 py-2 text-xs"></select>
+                        <button onclick="openItemEditor('checklist')" class="admin-add-btn hidden bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-lg text-xs font-bold whitespace-nowrap shadow">+ قائمة</button>
+                        <button onclick="editCurrentChecklist()" class="admin-edit-btn hidden bg-amber-500 hover:bg-amber-600 text-white px-2.5 py-2 rounded-lg text-xs"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteCurrentChecklist()" class="admin-del-btn hidden bg-red-600 hover:bg-red-700 text-white px-2.5 py-2 rounded-lg text-xs"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
                 <div class="bg-white px-4 py-3 rounded-xl shadow-sm border border-slate-200 flex items-center gap-4">
@@ -277,25 +253,49 @@
             </div>
         </section>
 
-        <!-- القسم 6: المُصيغ الذكي AI (مغلق للأعضاء فقط - يعمل بنموذج Gemini 1.5 Flash) -->
+        <!-- القسم 4: بنك النماذج والصيغ الإجرائية (مغلق للأعضاء فقط) -->
+        <section id="tab-forms" class="tab-content hidden space-y-4">
+            <div id="formsLockedBanner" class="hidden bg-white p-8 rounded-2xl shadow-lg border-2 border-judicial-gold text-center space-y-4">
+                <div class="w-16 h-16 rounded-full bg-amber-50 border-2 border-judicial-gold text-judicial-gold text-2xl flex items-center justify-center mx-auto">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="text-lg font-bold text-judicial-900">بنك النماذج والصيغ الإجرائية مخصص للأعضاء المعتمدين</h3>
+                <p class="text-xs text-slate-600 max-w-xl mx-auto leading-relaxed">يتيح هذا القسم استعراض ونسخ محاضر الاطلاع، محاضر التحقيق، الاستكتاب، طلبات الإذن، ومذكرات التصرف القياسية.</p>
+                <button onclick="openMemberAuthModal()" class="bg-judicial-900 text-judicial-gold font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-md">تسجيل الدخول / كود VIP</button>
+            </div>
+            <div id="formsUnlockedContent" class="space-y-4">
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap justify-between items-center gap-3">
+                    <div>
+                        <h2 class="text-base font-bold text-judicial-900">بنك النماذج والصيغ الإجرائية الرسمية (محاضر، استكتاب، مذكرات)</h2>
+                        <p class="text-xs text-slate-500">صيغ جاهزة للنسخ الفوري أو التحميل للاستخدام اليومي في التحقيقات.</p>
+                    </div>
+                    <button onclick="openItemEditor('form')" class="admin-add-btn hidden bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg text-xs font-bold shadow flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> إضافة نموذج إجرائي جديد
+                    </button>
+                </div>
+                <div id="formsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- القسم 5: المُصيغ والقيود الذكي AI (مغلق للأعضاء فقط - نموذج Gemini 1.5 Flash القابل للتبديل والتصرفات الـ 5) -->
         <section id="tab-qayds" class="tab-content hidden space-y-6">
             <div id="qaydsLockedBanner" class="hidden bg-white p-8 rounded-2xl shadow-lg border-2 border-judicial-gold text-center space-y-4">
                 <div class="w-16 h-16 rounded-full bg-amber-50 border-2 border-judicial-gold text-judicial-gold text-2xl flex items-center justify-center mx-auto">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                 </div>
-                <h3 class="text-lg font-bold text-judicial-900">المُصيغ القانوني بالذكاء الاصطناعي متاح للأعضاء المعتمدين فقط</h3>
-                <p class="text-xs text-slate-600 max-w-xl mx-auto leading-relaxed">يتيح هذا القسم توليد القيود والأوصاف ومذكرات التصرف آلياً عبر محرك Gemini 1.5 Flash السريع والمحدث.</p>
+                <h3 class="text-lg font-bold text-judicial-900">المُصيغ القانوني بالذكاء الاصطناعي ومولد القيود متاح للأعضاء المعتمدين فقط</h3>
+                <p class="text-xs text-slate-600 max-w-xl mx-auto leading-relaxed">يتيح هذا القسم اختيار نوع التصرف (حفظ قطعي، حفظ مؤقت، عدم الأهمية، مجازاة، إحالة) وتوليد القيد والوصف بالذكاء الاصطناعي بضغطة زر.</p>
                 <button onclick="openMemberAuthModal()" class="bg-judicial-900 text-judicial-gold font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-md">تسجيل الدخول لتفعيل المُصيغ الذكي</button>
             </div>
             <div id="qaydsUnlockedContent" class="space-y-6">
-                <!-- محرك Gemini 1.5 Flash المباشر -->
-                <div class="bg-gradient-to-l from-judicial-950 via-judicial-900 to-indigo-950 text-white p-6 rounded-2xl shadow-xl border-2 border-judicial-gold">
-                    <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-700 pb-3 mb-4">
+                <!-- محرك التصرف والقيود الذكي القابل للتبديل -->
+                <div class="bg-gradient-to-l from-judicial-950 via-judicial-900 to-indigo-950 text-white p-6 rounded-2xl shadow-xl border-2 border-judicial-gold space-y-4">
+                    <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-700 pb-3">
                         <div>
                             <h3 class="font-bold text-judicial-gold text-base flex items-center gap-2">
-                                <i class="fa-solid fa-robot text-xl"></i> المُصيغ القانوني بالذكاء الاصطناعي (Gemini 1.5 Flash)
+                                <i class="fa-solid fa-robot text-xl"></i> مولّد القيود والأوصاف وتحديد التصرف (Gemini 1.5 Flash AI)
                             </h3>
-                            <p class="text-xs text-slate-300">اكتب ملخص الواقعة، وسيقوم نموذج Flash بتوليد الوصف ومواد الإسناد ومذكرات التصرف في ثوانٍ معدودة.</p>
+                            <p class="text-xs text-slate-300">اختر نوع التصرف (حفظ قطعي، مؤقت، عدم أهمية، مجازاة، إحالة)، واكتب ملخص الواقعة، وسيقوم النظام بتوليد الصيغة المنضبطة فوراً.</p>
                         </div>
                         <span class="bg-indigo-900/90 border border-indigo-400 text-indigo-200 text-[11px] px-3 py-1 rounded-full font-bold">
                             Powered by gemini-1.5-flash
@@ -303,23 +303,24 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                        <div class="lg:col-span-2 space-y-2">
-                            <label class="block text-xs font-bold text-judicial-gold">اكتب ملخص الواقعة والتواريخ باختصار:</label>
-                            <textarea id="aiCaseInput" rows="3" placeholder="مثال: تقاعس مهندس التنظيم عن اتخاذ الإجراءات لبناء بدون ترخيص..." 
-                                      class="w-full bg-judicial-800 text-white placeholder-slate-400 rounded-xl p-3 border border-slate-600 text-xs"></textarea>
+                        <div>
+                            <label class="block text-xs font-bold text-judicial-gold mb-1">اختر نوع التصرف النهائي بالقضية:</label>
+                            <select id="disposalTypeSelect" class="w-full bg-judicial-800 text-white border border-slate-600 rounded-xl p-2.5 text-xs font-bold">
+                                <option value="hifz_qat'i">حفظ قطعي (عدم الصحة / عدم المخالفة / سقوط)</option>
+                                <option value="hifz_muwaqat">حفظ مؤقّت (عدم كفاية الأدلة / مجهول)</option>
+                                <option value="hifz_adam_ahamia">حفظ قطعي لعدم الأهمية (بعد المواجهة)</option>
+                                <option value="mujazاة">مجازاة إدارية (ثبوت المخالفة)</option>
+                                <option value="ihala">إحالة إلى المحكمة التأديبية</option>
+                            </select>
                         </div>
-                        <div class="space-y-3 flex flex-col justify-between">
-                            <div>
-                                <label class="block text-xs font-bold text-slate-300 mb-1">النظام القانوني:</label>
-                                <select id="aiLawSystem" class="w-full bg-judicial-800 text-white border border-slate-600 rounded-xl p-2.5 text-xs font-bold">
-                                    <option value="civil_penalty">قانون الخدمة المدنية 81/2016 (مجازاة إدارية)</option>
-                                    <option value="civil_court">قانون الخدمة المدنية 81/2016 (إحالة للمحكمة)</option>
-                                    <option value="contracts_law">قانون التعاقدات العامة 182/2018</option>
-                                </select>
+                        <div class="lg:col-span-2 space-y-1">
+                            <label class="block text-xs font-bold text-judicial-gold">اسم المخالف والدرجة، الفترة، وملخص الواقعة:</label>
+                            <div class="flex gap-2">
+                                <textarea id="aiCaseInput" rows="2" placeholder="مثال: فلان - مهندس تنظيم، خلال 2025، تقاعس عن إزالة بناء مخالف..." class="w-full bg-judicial-800 text-white placeholder-slate-400 rounded-xl p-2.5 border border-slate-600 text-xs"></textarea>
+                                <button onclick="generateWithAI()" id="aiGenerateBtn" class="bg-judicial-gold hover:bg-yellow-500 text-judicial-950 font-extrabold px-5 py-2 rounded-xl text-xs shadow-lg transition whitespace-nowrap flex items-center gap-1">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> توليد بالـ AI
+                                </button>
                             </div>
-                            <button onclick="generateWithAI()" id="aiGenerateBtn" class="w-full bg-judicial-gold hover:bg-yellow-500 text-judicial-950 font-extrabold py-3 rounded-xl text-xs shadow-lg transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> صياغة سريعة بـ Flash AI
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -334,26 +335,23 @@
                                 <button onclick="deleteCurrentQayd()" class="admin-del-btn hidden bg-red-600 text-white px-2 py-1 rounded text-[11px]"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">اختر القالب:</label>
-                            <select id="qaydSelector" onchange="generateQayd()" class="w-full bg-slate-50 border rounded-lg p-2 text-xs font-bold text-judicial-900"></select>
-                        </div>
+                        <div><label class="block text-xs font-bold text-slate-700 mb-1">اختر القالب:</label><select id="qaydSelector" onchange="generateQayd()" class="w-full bg-slate-50 border rounded-lg p-2 text-xs font-bold text-judicial-900"></select></div>
                         <div><label class="block text-xs font-bold text-slate-700 mb-1">اسم المخالف وصفته:</label><input type="text" id="q_name" oninput="generateQayd()" placeholder="الاسم والدرجة..." class="w-full border rounded-lg p-2 text-xs"></div>
-                        <div><label class="block text-xs font-bold text-slate-700 mb-1">الفترة الزمنية:</label><input type="text" id="q_date" oninput="generateQayd()" placeholder="خلال عام..." class="w-full border rounded-lg p-2 text-xs"></div>
-                        <div><label class="block text-xs font-bold text-slate-700 mb-1">تفاصيل الواقعة:</label><input type="text" id="q_property" oninput="generateQayd()" placeholder="العقار أو الجهة..." class="w-full border rounded-lg p-2 text-xs"></div>
+                        <div><label class="block text-xs font-bold text-slate-700 mb-1">الفترة الزمنية ومقر العمل:</label><input type="text" id="q_date" oninput="generateQayd()" placeholder="خلال عام..." class="w-full border rounded-lg p-2 text-xs"></div>
+                        <div><label class="block text-xs font-bold text-slate-700 mb-1">بيان الواقعة / الجهة:</label><input type="text" id="q_property" oninput="generateQayd()" placeholder="العقار أو الجهة..." class="w-full border rounded-lg p-2 text-xs"></div>
                     </div>
 
                     <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between">
                         <div>
                             <div class="flex justify-between items-center border-b pb-3 mb-4">
-                                <h3 class="font-bold text-judicial-900 text-sm">الصياغة القانونية</h3>
+                                <h3 class="font-bold text-judicial-900 text-sm">الصياغة والمنطوق النهائي</h3>
                                 <span id="qaydSectorBadge" class="bg-judicial-900 text-judicial-gold text-xs font-bold px-2.5 py-0.5 rounded"></span>
                             </div>
                             <div id="qaydOutput" contenteditable="true" class="bg-slate-50 p-5 rounded-xl border-2 border-dashed border-slate-300 leading-relaxed text-slate-800 font-serif text-lg whitespace-pre-line focus:outline-none focus:border-judicial-gold"></div>
                         </div>
                         <div class="mt-5 flex flex-wrap gap-2 justify-end border-t pt-4">
                             <button onclick="copyText('qaydOutput')" class="bg-judicial-900 text-white px-4 py-2 rounded-lg text-xs font-bold">نسخ النص</button>
-                            <button onclick="addToBasket('القيد والوصف', document.getElementById('qaydOutput').innerText)" class="bg-judicial-gold text-judicial-950 font-extrabold px-4 py-2 rounded-lg text-xs">+ للمسودة</button>
+                            <button onclick="addToBasket('القيد والوصف والتصرف', document.getElementById('qaydOutput').innerText)" class="bg-judicial-gold text-judicial-950 font-extrabold px-4 py-2 rounded-lg text-xs">+ للمسودة</button>
                         </div>
                     </div>
                 </div>
@@ -381,7 +379,7 @@
         </div>
     </div>
 
-    <!-- نافذة تسجيل ودخول الأعضاء + كود دعوة VIP -->
+    <!-- نافذة دخول الأعضاء مع كود VIP وحفظ الصفة الحقيقية -->
     <div id="memberAuthModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border-2 border-judicial-gold my-8">
             <div class="bg-judicial-900 text-white p-4 flex justify-between items-center">
@@ -401,45 +399,75 @@
             <div id="formMemberRegister" class="p-6 space-y-3 hidden">
                 <div><label class="block text-xs font-bold mb-1">الاسم الكامل:</label><input type="text" id="reg_name" class="w-full border rounded-lg p-2 text-xs"></div>
                 <div class="grid grid-cols-2 gap-2">
-                    <div><label class="block text-xs font-bold mb-1">الصفة:</label><input type="text" id="reg_title" class="w-full border rounded-lg p-2 text-xs"></div>
-                    <div><label class="block text-xs font-bold mb-1">جهة العمل:</label><input type="text" id="reg_workplace" class="w-full border rounded-lg p-2 text-xs"></div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1">الدرجة الوظيفية / الصفة:</label>
+                        <select id="reg_title" class="w-full border rounded p-2 text-xs font-bold">
+                            <option value="معاون نيابة إدارية">معاون نيابة إدارية</option>
+                            <option value="مساعد نيابة إدارية">مساعد نيابة إدارية</option>
+                            <option value="وكيل نيابة إدارية">وكيل نيابة إدارية</option>
+                            <option value="وكيل نيابة إدارية فئة ممتازة">وكيل نيابة فئة ممتازة</option>
+                            <option value="رئيس نيابة إدارية">رئيس نيابة إدارية</option>
+                            <option value="وكيل عام نيابة إدارية">وكيل عام</option>
+                            <option value="باحث قانوني">باحث قانوني</option>
+                        </select>
+                    </div>
+                    <div><label class="block text-xs font-bold mb-1">جهة العمل / النيابة:</label><input type="text" id="reg_workplace" placeholder="مثال: نيابة ملوي" class="w-full border rounded p-2 text-xs"></div>
                 </div>
-                <div><label class="block text-xs font-bold mb-1">رقم الهاتف (واتساب):</label><input type="tel" id="reg_phone" class="w-full border rounded-lg p-2 text-xs"></div>
+                <div><label class="block text-xs font-bold mb-1">رقم الهاتف (واتساب):</label><input type="tel" id="reg_phone" class="w-full border rounded p-2 text-xs"></div>
                 <div class="grid grid-cols-2 gap-2">
                     <div><label class="block text-xs font-bold mb-1">اسم المستخدم:</label><input type="text" id="reg_username" class="w-full border rounded-lg p-2 text-xs"></div>
                     <div><label class="block text-xs font-bold mb-1">كلمة المرور:</label><input type="password" id="reg_pin" class="w-full border rounded-lg p-2 text-xs"></div>
                 </div>
-                <div><label class="block text-[11px] font-bold text-emerald-800 mb-1">كود الدعوة الفوري (VIP Code):</label><input type="text" id="reg_invite" placeholder="اتركه فارغاً للمراجعة اليدوية" class="w-full bg-emerald-50 border border-emerald-300 rounded-lg p-2 text-xs"></div>
+                <div><label class="block text-[11px] font-bold text-emerald-800 mb-1">كود التفعيل الفوري (VIP Code):</label><input type="text" id="reg_invite" placeholder="اتركه فارغاً للمراجعة اليدوية" class="w-full bg-emerald-50 border border-emerald-300 rounded-lg p-2 text-xs"></div>
                 <button onclick="submitMemberRegister()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-lg text-sm shadow">إرسال طلب العضوية</button>
             </div>
         </div>
     </div>
 
-    <!-- لوحة الإدارة الشاملة (5 غرف) -->
+    <!-- لوحة الإدارة الشاملة (تشمل التحكم الكامل في النصوص والعلامة التجارية والدعوات) -->
     <div id="adminModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-3 sm:p-6">
         <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[92vh] flex flex-col shadow-2xl border-2 border-judicial-gold overflow-hidden">
             <div class="bg-judicial-900 text-white p-4 flex justify-between items-center border-b border-judicial-gold">
-                <div><h3 class="font-bold text-judicial-gold text-base">لوحة الإدارة المركزية (5 غرف تحكم)</h3></div>
+                <div><h3 class="font-bold text-judicial-gold text-base">لوحة الإدارة المركزية (التحكم بالهوية والنصوص والأعضاء)</h3></div>
                 <button onclick="toggleModal('adminModal')" class="text-slate-300 hover:text-white text-2xl">&times;</button>
             </div>
             <div class="bg-slate-100 p-2 border-b flex flex-wrap gap-1.5 text-xs font-bold">
-                <button onclick="switchAdminView('adm-members')" id="admBtn-members" class="adm-nav-btn adm-nav-active px-3 py-2 rounded-lg">1. الأعضاء والاعتماد (<span id="pendingMembersCount" class="text-red-500">0</span>)</button>
-                <button onclick="switchAdminView('adm-library')" id="admBtn-library" class="adm-nav-btn bg-white px-3 py-2 rounded-lg border">2. إدارة المكتبة و Drive</button>
-                <button onclick="switchAdminView('adm-QuickAdd')" id="admBtn-QuickAdd" class="adm-nav-btn bg-white px-3 py-2 rounded-lg border">3. الإضافة الشاملة</button>
-                <button onclick="switchAdminView('adm-pending')" id="admBtn-pending" class="adm-nav-btn bg-white px-3 py-2 rounded-lg border">4. المساهمات (<span id="pendingCountBadge">0</span>)</button>
+                <button onclick="switchAdminView('adm-members')" id="admBtn-members" class="adm-nav-btn adm-nav-active px-3 py-2 rounded-lg">1. الأعضاء والصفات (<span id="pendingMembersCount" class="text-red-500">0</span>)</button>
+                <button onclick="switchAdminView('adm-branding')" id="admBtn-branding" class="adm-nav-btn bg-white px-3 py-2 rounded-lg border">2. تخصيص النصوص والهوية</button>
+                <button onclick="switchAdminView('adm-library')" id="admBtn-library" class="adm-nav-btn bg-white px-3 py-2 rounded-lg border">3. إدارة المكتبة و Drive</button>
+                <button onclick="switchAdminView('adm-QuickAdd')" id="admBtn-QuickAdd" class="adm-nav-btn bg-white px-3 py-2 rounded-lg border">4. الإضافة الشاملة للأقسام</button>
                 <button onclick="switchAdminView('adm-logs')" id="admBtn-logs" class="adm-nav-btn bg-white px-3 py-2 rounded-lg border">5. سجل الرقابة & AI</button>
             </div>
             <div class="p-5 overflow-y-auto flex-1 custom-scroll">
+                <!-- الغرفة 1: الأعضاء -->
                 <div id="adm-members" class="adm-view space-y-4">
                     <div class="overflow-x-auto border rounded-xl">
                         <table class="w-full text-right text-xs">
                             <thead class="bg-judicial-900 text-judicial-gold">
-                                <tr><th class="p-3">العضو والصفة</th><th class="p-3">الهاتف واليوزر</th><th class="p-3">الحالة</th><th class="p-3">الصلاحيات</th><th class="p-3 text-center">إجراءات</th></tr>
+                                <tr><th class="p-3">العضو والصفة (يمكن تعديلها)</th><th class="p-3">الهاتف وبيانات الدخول</th><th class="p-3">الحالة</th><th class="p-3">الصلاحيات</th><th class="p-3 text-center">إجراءات</th></tr>
                             </thead>
                             <tbody id="membersTableBody" class="divide-y bg-white"></tbody>
                         </table>
                     </div>
                 </div>
+                <!-- الغرفة 2: تخصيص الهوية والنصوص (Dynamic Branding) -->
+                <div id="adm-branding" class="adm-view hidden space-y-4">
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-300 text-xs text-amber-900 space-y-1">
+                        <strong><i class="fa-solid fa-paintbrush text-amber-600 ml-1"></i> تغيير نصوص المنصة وعناوين التبويبات دون الحاجة لتعديل الكود البرمجي:</strong>
+                        <p>قم بتعديل أي اسم أو نص بالأسفل واضغط (حفظ وتطبيق فوري)، وسيتم تحديثه سحابياً لجميع الزوار والأعضاء.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div><label class="font-bold block mb-1">اسم المنصة الرئيسي (Brand Title):</label><input type="text" id="brand_title_input" class="w-full border rounded p-2 font-bold"></div>
+                        <div><label class="font-bold block mb-1">الوصف الفرعي بالهيدر:</label><input type="text" id="brand_sub_input" class="w-full border rounded p-2"></div>
+                        <div><label class="font-bold block mb-1">عنوان تبويب 1 (المكتبة):</label><input type="text" id="tab1_input" class="w-full border rounded p-2"></div>
+                        <div><label class="font-bold block mb-1">عنوان تبويب 2 (الحيثيات والدفوع):</label><input type="text" id="tab2_input" class="w-full border rounded p-2"></div>
+                        <div><label class="font-bold block mb-1">عنوان تبويب 3 (قوائم الفحص):</label><input type="text" id="tab3_input" class="w-full border rounded p-2"></div>
+                        <div><label class="font-bold block mb-1">عنوان تبويب 4 (النماذج الإجرائية):</label><input type="text" id="tab4_input" class="w-full border rounded p-2"></div>
+                        <div><label class="font-bold block mb-1">عنوان تبويب 5 (المصيغ والقيود AI):</label><input type="text" id="tab5_input" class="w-full border rounded p-2"></div>
+                    </div>
+                    <button onclick="saveBrandingSettings()" class="bg-judicial-900 text-judicial-gold font-bold px-6 py-2.5 rounded-xl text-xs shadow">حفظ وتطبيق النصوص والهوية سحابياً</button>
+                </div>
+                <!-- الغرفة 3: المكتبة -->
                 <div id="adm-library" class="adm-view hidden space-y-4">
                     <div class="bg-emerald-50 p-3 rounded-xl border flex justify-between items-center text-xs">
                         <span>إضافة كتب أو ملفات PDF عبر روابط Google Drive.</span>
@@ -447,16 +475,16 @@
                     </div>
                     <div id="adminLibraryList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
                 </div>
+                <!-- الغرفة 4: الإضافة الشاملة -->
                 <div id="adm-QuickAdd" class="adm-view hidden space-y-5">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div class="p-4 bg-slate-50 rounded-xl border"><button onclick="openItemEditor('defense')" class="w-full bg-judicial-900 text-judicial-gold font-bold py-2 rounded text-xs">+ إضافة حيثية / دفع</button></div>
                         <div class="p-4 bg-slate-50 rounded-xl border"><button onclick="openItemEditor('checklist')" class="w-full bg-judicial-900 text-judicial-gold font-bold py-2 rounded text-xs">+ إضافة قائمة فحص</button></div>
+                        <div class="p-4 bg-slate-50 rounded-xl border"><button onclick="openItemEditor('form')" class="w-full bg-judicial-900 text-judicial-gold font-bold py-2 rounded text-xs">+ إضافة نموذج إجرائي</button></div>
                         <div class="p-4 bg-slate-50 rounded-xl border"><button onclick="openItemEditor('qayd')" class="w-full bg-judicial-900 text-judicial-gold font-bold py-2 rounded text-xs">+ إضافة قالب قيد</button></div>
                     </div>
                 </div>
-                <div id="adm-pending" class="adm-view hidden space-y-3">
-                    <div id="pendingListContainer" class="space-y-3"></div>
-                </div>
+                <!-- الغرفة 5: السجل و الـ AI -->
                 <div id="adm-logs" class="adm-view hidden space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="p-4 bg-slate-50 rounded-xl border space-y-2">
@@ -465,7 +493,7 @@
                             <button onclick="saveSystemSettings()" class="bg-indigo-600 text-white font-bold px-4 py-1.5 rounded text-xs">حفظ المفتاح</button>
                         </div>
                         <div class="p-4 bg-emerald-50 rounded-xl border space-y-2">
-                            <h4 class="font-bold text-xs">كود الدعوة الفوري (VIP Code):</h4>
+                            <h4 class="font-bold text-xs">كود الدعوة الفوري المشفر (VIP Code):</h4>
                             <input type="text" id="cfg_invite_code" placeholder="VIP2026" class="w-full border rounded p-2 text-xs font-bold">
                             <button onclick="saveSystemSettings()" class="bg-emerald-700 text-white font-bold px-4 py-1.5 rounded text-xs">تحديث الكود</button>
                         </div>
@@ -510,7 +538,7 @@
         </div>
     </div>
 
-    <!-- المحرك السحابي المتكامل مع نموذج Gemini 1.5 Flash -->
+    <!-- المحرك السحابي المتكامل مع الهوية الديناميكية ومولد القيود الـ 5 تصرفات -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
@@ -526,24 +554,26 @@
 
         const app = initializeApp(firebaseConfig);
         const firestoreDB = getFirestore(app);
-        const STATE_DOC_REF = doc(firestoreDB, "platform_data", "main_state_v5_flash");
+        const STATE_DOC_REF = doc(firestoreDB, "platform_data", "main_state_v6_dynamic");
 
         const initialPlatformState = {
             _coreDeveloperSignature: "Ahmed Talaat El-Tawil | Senior Platform Architect",
+            branding: {
+                brandTitle: "المُـعَـاوِن",
+                brandSub: "البوابة البحثية للعلوم الإدارية والوظيفية وصياغة القرارات",
+                tab1: "1. المكتبة والمؤلفات",
+                tab2: "2. الحيثيات والدفوع",
+                tab3: "3. قوائم الفحص 🔒",
+                tab4: "4. النماذج الإجرائية 🔒",
+                tab5: "5. المصيغ والقيود AI 🔒"
+            },
             settings: { inviteCode: "VIP2026", geminiApiKey: "" },
             sectors: ["الكل", "محليات ومتغيرات مكانية", "تعاقدات ومشتريات ومخازن", "شؤون وظيفية وخدمة مدنية", "صحة ومستشفيات", "تربية وتعليم وجامعات", "زراعة وري وأملاك دولة"],
             members: [
-                { id: "super_admin", name: "مدير المنصة", title: "المؤسس والمشرف العام", workplace: "المركز الرئيسي", phone: "-", username: "admin", pin: "1998", role: "super_admin", status: "approved", perms: { add: true, edit: true, delete: true, approve: true, manageUsers: true }, joinedAt: "2026-10-30" }
+                { id: "super_admin", name: "مدير المنصة", title: "معاون نيابة إدارية", workplace: "نيابة ملوي", phone: "-", username: "admin", pin: "1998", role: "super_admin", status: "approved", perms: { add: true, edit: true, delete: true, approve: true, manageUsers: true }, joinedAt: "2026-10-30" }
             ],
             library: [
-                { id: "lib_1", sector: "شؤون وظيفية وخدمة مدنية", category: "مؤلفات السادة المستشارين", title: "المستخلص من إفتاء الجمعية العمومية للفتوى والتشريع في قانون الخدمة المدنية 81/2016", author: "المستشار/ إسلام توفيق الشحات والمستشار/ محمد شكري أبو رحيل", description: "مرجع شامل يضم مبادئ الفتوى والتشريع حتى عام 2020.", driveUrl: "" },
-                { id: "lib_2", sector: "شؤون وظيفية وخدمة مدنية", category: "مؤلفات السادة المستشارين", title: "المآخذ القضائية على عضو النيابة الإدارية فنياً ومسلكياً", author: "المستشار الدكتور/ كمال الشحات (التفتيش القضائي)", description: "موسوعة المآخذ في محاضر الاطلاع والتحقيق والتصرف.", driveUrl: "" }
-            ],
-            jurisdictions: [
-                { id: "jur_1", sector: "الكل", category: "اختصاص ولائي حصري", title: "الاختصاص بالتحقيق مع الوظائف القيادية والمخالفات المالية", content: "تختص النيابة الإدارية بالتحقيق مع شاغلي الوظائف القيادية وفي المخالفات المالية التي يترتب عليها ضياع حق مالي للدولة.", ref: "م 60 ق 81/2016 وم 45 تعليمات" }
-            ],
-            regulations: [
-                { id: "reg_1", sector: "شؤون وظيفية وخدمة مدنية", number: "قانون 81 لسنة 2016", title: "أحكام السلوك الوظيفي والتأديب", articles: ["مادة 57: كل موظف يخرج على مقتضى الواجب يجازى تأديبياً."] }
+                { id: "lib_1", sector: "شؤون وظيفية وخدمة مدنية", category: "مؤلفات السادة المستشارين", title: "المستخلص من إفتاء الجمعية العمومية للفتوى والتشريع في قانون الخدمة المدنية 81/2016", author: "المستشار/ إسلام توفيق الشحات والمستشار/ محمد شكري أبو رحيل", description: "مرجع شامل يضم مبادئ الفتوى والتشريع.", driveUrl: "" }
             ],
             defenses: [
                 { id: "def_1", sector: "الكل", category: "حيثيات الحفظ القطعي والمؤقت", title: "حيثية الحفظ لعدم الصحة (اتهام مرسل دون دليل)", response: "وحيث إنه متى كان الثابت يقيناً من الأوراق أن ما نُسب إلى المتهم لا يعدو عن كونه اتهاماً واهياً جاء دون سند يقويه...", ref: "المادة 208 من التعليمات", contributor: "إدارة المنصة" }
@@ -551,8 +581,11 @@
             checklists: [
                 { id: "chk_1", sector: "تعاقدات ومشتريات ومخازن", title: "فحص مخالفات المناقصات والتوريدات (قانون 182 لسنة 2018)", docs: ["خطة الاحتياجات السنوية", "مذكرة الطرح والاعتماد المالي"], witness_q: ["هل تم التحقق من توافر الاعتماد المالي؟"], accused_q: ["ما قولك فيما ثبت من تجزئة محل التعاقد؟"], tips: ["تجنب الجمع بين عدم الدقة وعدم الأمانة في وصف مخالفة واحدة."] }
             ],
+            forms: [
+                { id: "form_1", sector: "الكل", title: "صيغة محضر الاطلاع القياسي (بلاغ أو شكوى)", content: "إنه في يوم ...... الموافق .../.../2026 بمقر النيابة... بمعرفتنا نحن... استعرضنا أوراق القضية وتبين أن موضوعها يخلص في..." }
+            ],
             qayds: [
-                { id: "q_1", sector: "محليات ومتغيرات مكانية", title: "تقاعس عن اتخاذ إجراءات بناء مخالف", wasf: "لأنه بدائرة عمله بوصفه ({{الاسم}}) خلال {{التاريخ}} تقاعس عن اتخاذ الإجراءات حيال {{الواقعة}}.", articles: "أولاً: قيد الواقعة مخالفة إدارية بالمواد (57، 58/1، 60، 61، 62) من قانون الخدمة المدنية رقم 81 لسنة 2016." }
+                { id: "q_1", sector: "محليات ومتغيرات مكانية", title: "قالب تقاعس عن اتخاذ إجراءات بناء مخالف", wasf: "لأنه بدائرة عمله بوصفه ({{الاسم}}) خلال {{التاريخ}} تقاعس عن اتخاذ الإجراءات حيال {{الواقعة}}.", articles: "أولاً: قيد الواقعة مخالفة إدارية بالمواد (57، 58/1، 60، 61) من قانون الخدمة المدنية رقم 81 لسنة 2016." }
             ],
             pendingContributions: [],
             auditLogs: []
@@ -570,8 +603,9 @@
                 if (!snap.exists()) { await setDoc(STATE_DOC_REF, db); }
                 else {
                     const cloudData = snap.data();
-                    db = { ...initialPlatformState, ...cloudData, settings: { ...initialPlatformState.settings, ...(cloudData.settings || {}) } };
+                    db = { ...initialPlatformState, ...cloudData, branding: { ...initialPlatformState.branding, ...(cloudData.branding || {}) }, settings: { ...initialPlatformState.settings, ...(cloudData.settings || {}) } };
                     if (!db.library?.length) db.library = initialPlatformState.library;
+                    if (!db.forms?.length) db.forms = initialPlatformState.forms;
                 }
                 checkSavedSession();
                 refreshAllUI();
@@ -587,7 +621,7 @@
                     }
                 });
             } catch (err) {
-                const savedLocal = localStorage.getItem("moawen_v5_backup");
+                const savedLocal = localStorage.getItem("moawen_v6_backup");
                 if (savedLocal) db = JSON.parse(savedLocal);
                 checkSavedSession();
                 refreshAllUI();
@@ -596,9 +630,9 @@
 
         async function persistState(actionName = null, sectionName = null, itemTitle = null) {
             if (actionName) {
-                db.auditLogs.unshift({ id: "log_" + Date.now(), time: new Date().toLocaleString('ar-EG'), actor: currentUser ? currentUser.name : "باحث", action: actionName, section: sectionName || "-", details: itemTitle || "-" });
+                db.auditLogs.unshift({ id: "log_" + Date.now(), time: new Date().toLocaleString('ar-EG'), actor: currentUser ? `${currentUser.name} (${currentUser.title})` : "زائر", action: actionName, section: sectionName || "-", details: itemTitle || "-" });
             }
-            localStorage.setItem("moawen_v5_backup", JSON.stringify(db));
+            localStorage.setItem("moawen_v6_backup", JSON.stringify(db));
             refreshAllUI();
             try { await setDoc(STATE_DOC_REF, db); } catch (e) {}
         }
@@ -612,13 +646,23 @@
         }
 
         function checkSavedSession() {
-            const savedId = sessionStorage.getItem("moawen_v5_user_id");
+            const savedId = sessionStorage.getItem("moawen_v6_user_id");
             if (!savedId) return;
             const found = db.members.find(m => m.id === savedId && (m.status === 'approved' || m.role === 'super_admin'));
             if (found) currentUser = found;
         }
 
         function updateHybridAndAuthUI() {
+            const b = db.branding || initialPlatformState.branding;
+            document.getElementById('siteMainTitle').innerText = `${b.brandTitle} | البوابة البحثية`;
+            document.getElementById('headerBrandTitle').innerText = b.brandTitle;
+            document.getElementById('headerBrandSub').innerText = b.brandSub;
+            document.getElementById('tabName-library').innerText = b.tab1;
+            document.getElementById('tabName-defenses').innerText = b.tab2;
+            document.getElementById('tabName-checklists').innerText = b.tab3;
+            document.getElementById('tabName-forms').innerText = b.tab4;
+            document.getElementById('tabName-qayds').innerText = b.tab5;
+
             const statusBar = document.getElementById('userStatusBar');
             const memberTopText = document.getElementById('memberTopText');
             const topAlertBadge = document.getElementById('topAdminAlertBadge');
@@ -634,6 +678,8 @@
             const approved = isApprovedMember();
             document.getElementById('checklistsLockedBanner').classList.toggle('hidden', approved);
             document.getElementById('checklistsUnlockedContent').classList.toggle('hidden', !approved);
+            document.getElementById('formsLockedBanner').classList.toggle('hidden', approved);
+            document.getElementById('formsUnlockedContent').classList.toggle('hidden', !approved);
             document.getElementById('qaydsLockedBanner').classList.toggle('hidden', approved);
             document.getElementById('qaydsUnlockedContent').classList.toggle('hidden', !approved);
 
@@ -647,8 +693,9 @@
             statusBar.classList.remove('hidden');
             memberTopText.innerText = currentUser.name;
             document.getElementById('activeUserName').innerText = currentUser.name;
-            document.getElementById('activeUserTitle').innerText = `${currentUser.title || ''} - ${currentUser.workplace || ''}`;
-            document.getElementById('activeRoleBadge').innerText = currentUser.role === 'super_admin' ? "👑 مدير المنصة" : currentUser.role === 'moderator' ? "🛡️ مشرف معتمد" : "👤 عضو معتمد";
+            document.getElementById('activeUserTitle').innerText = currentUser.title || 'معاون نيابة إدارية';
+            document.getElementById('activeUserWorkplace').innerText = currentUser.workplace || 'النيابة الإدارية';
+            document.getElementById('activeRoleBadge').innerText = currentUser.role === 'super_admin' ? "👑 مدير المنصة" : currentUser.role === 'moderator' ? "🛡️ مشرف معتمد" : "⚖️ عضو معتمد";
 
             document.querySelectorAll('.admin-add-btn').forEach(el => el.classList.toggle('hidden', !hasPerm('add')));
             document.querySelectorAll('.admin-edit-btn').forEach(el => el.classList.toggle('hidden', !hasPerm('edit')));
@@ -690,14 +737,14 @@
             if (found.status === 'pending') return showAuthAlert("⏳ حسابك قيد المراجعة من المدير.", true);
             if (found.status === 'blocked') return showAuthAlert("⛔ تم إيقاف الحساب.");
             currentUser = found;
-            sessionStorage.setItem("moawen_v5_user_id", found.id);
+            sessionStorage.setItem("moawen_v6_user_id", found.id);
             toggleModal('memberAuthModal');
             refreshAllUI();
         };
 
         window.submitMemberRegister = async function() {
             const name = document.getElementById('reg_name').value.trim();
-            const title = document.getElementById('reg_title').value.trim();
+            const title = document.getElementById('reg_title').value;
             const workplace = document.getElementById('reg_workplace').value.trim();
             const phone = document.getElementById('reg_phone').value.trim();
             const username = document.getElementById('reg_username').value.trim().toLowerCase();
@@ -710,8 +757,8 @@
             const isVIP = invite && db.settings?.inviteCode && invite === db.settings.inviteCode;
             const newMem = { id: "mem_" + Date.now(), name, title, workplace, phone, username, pin, role: "member", status: isVIP ? "approved" : "pending", perms: { add: false, edit: false, delete: false, approve: false, manageUsers: false }, joinedAt: new Date().toLocaleDateString('ar-EG') };
             db.members.push(newMem);
-            await persistState(isVIP ? "تسجيل بكود VIP" : "طلب عضوية", "بوابة الأعضاء", name);
-            if (isVIP) { currentUser = newMem; sessionStorage.setItem("moawen_v5_user_id", newMem.id); toggleModal('memberAuthModal'); refreshAllUI(); alert("تم تفعيل عضويتك فوراً بكود الدعوة!"); }
+            await persistState(isVIP ? "تسجيل بكود VIP" : "طلب عضوية", "بوابة الأعضاء", `${name} (${title})`);
+            if (isVIP) { currentUser = newMem; sessionStorage.setItem("moawen_v6_user_id", newMem.id); toggleModal('memberAuthModal'); refreshAllUI(); alert("تم تفعيل عضويتك فوراً بكود الدعوة!"); }
             else { switchAuthTab('login'); showAuthAlert("✅ تم إرسال الطلب، بانتظار تفعيل المدير.", true); }
         };
 
@@ -719,6 +766,13 @@
             if (currentUser && (currentUser.role === 'super_admin' || currentUser.role === 'moderator')) {
                 document.getElementById('cfg_gemini_key').value = db.settings?.geminiApiKey || "";
                 document.getElementById('cfg_invite_code').value = db.settings?.inviteCode || "VIP2026";
+                document.getElementById('brand_title_input').value = db.branding?.brandTitle || "المُـعَـاوِن";
+                document.getElementById('brand_sub_input').value = db.branding?.brandSub || "";
+                document.getElementById('tab1_input').value = db.branding?.tab1 || "";
+                document.getElementById('tab2_input').value = db.branding?.tab2 || "";
+                document.getElementById('tab3_input').value = db.branding?.tab3 || "";
+                document.getElementById('tab4_input').value = db.branding?.tab4 || "";
+                document.getElementById('tab5_input').value = db.branding?.tab5 || "";
                 toggleModal('adminModal');
                 return;
             }
@@ -727,56 +781,100 @@
             const foundAdmin = db.members.find(m => m.pin === pin && (m.role === 'super_admin' || m.role === 'moderator') && m.status === 'approved');
             if (foundAdmin) {
                 currentUser = foundAdmin;
-                sessionStorage.setItem("moawen_v5_user_id", foundAdmin.id);
+                sessionStorage.setItem("moawen_v6_user_id", foundAdmin.id);
                 refreshAllUI();
                 document.getElementById('cfg_gemini_key').value = db.settings?.geminiApiKey || "";
                 document.getElementById('cfg_invite_code').value = db.settings?.inviteCode || "VIP2026";
+                document.getElementById('brand_title_input').value = db.branding?.brandTitle || "المُـعَـاوِن";
+                document.getElementById('brand_sub_input').value = db.branding?.brandSub || "";
+                document.getElementById('tab1_input').value = db.branding?.tab1 || "";
+                document.getElementById('tab2_input').value = db.branding?.tab2 || "";
+                document.getElementById('tab3_input').value = db.branding?.tab3 || "";
+                document.getElementById('tab4_input').value = db.branding?.tab4 || "";
+                document.getElementById('tab5_input').value = db.branding?.tab5 || "";
                 toggleModal('adminModal');
             } else { alert("الرقم السري غير صحيح!"); }
         };
 
         window.logoutUser = function() {
             currentUser = null;
-            sessionStorage.removeItem("moawen_v5_user_id");
+            sessionStorage.removeItem("moawen_v6_user_id");
             refreshAllUI();
         };
 
-        // ================= نموذج Gemini 1.5 Flash الذكي =================
+        window.saveBrandingSettings = async function() {
+            if (!hasPerm('manageUsers')) return;
+            db.branding = {
+                brandTitle: document.getElementById('brand_title_input').value.trim() || "المُـعَـاوِن",
+                brandSub: document.getElementById('brand_sub_input').value.trim(),
+                tab1: document.getElementById('tab1_input').value.trim(),
+                tab2: document.getElementById('tab2_input').value.trim(),
+                tab3: document.getElementById('tab3_input').value.trim(),
+                tab4: document.getElementById('tab4_input').value.trim(),
+                tab5: document.getElementById('tab5_input').value.trim()
+            };
+            await persistState("تحديث النصوص والهوية", "الإعدادات", "تحديث الهوية");
+            alert("تم حفظ النصوص والهوية وتطبيقها فوراً سحابياً!");
+        };
+
+        // ================= محرك الـ AI القابل للتبديل والتصرفات الـ 5 =================
         window.generateWithAI = async function() {
             const text = document.getElementById('aiCaseInput').value.trim();
-            const law = document.getElementById('aiLawSystem').value;
+            const disposal = document.getElementById('disposalTypeSelect').value;
             const btn = document.getElementById('aiGenerateBtn');
             const outBox = document.getElementById('qaydOutput');
-            if (!text) return alert("اكتب ملخص الواقعة أولاً!");
+            if (!text) return alert("اكتب ملخص الواقعة واسم المخالف أولاً!");
 
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الصياغة بـ Gemini Flash...`;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري توليد التصرف بـ Gemini 1.5 Flash...`;
 
             const apiKey = db.settings?.geminiApiKey?.trim();
             if (apiKey) {
                 try {
-                    const systemPrompt = `أنت مستشار قانوني خبير بالعلوم الإدارية وصياغة مذكرات النيابة في مصر 2026. طبق القانون 81 لسنة 2016 ولا تذكر قانون 47 لسنة 1978. في الوصف لا تجمع بين عدم الدقة وعدم الأمانة. قدم القيد ومواد الإسناد والوصف بدقة.`;
+                    const systemPrompt = `أنت مستشار قانوني خبير بالعلوم الإدارية وصياغة مذكرات التصرف في النيابة الإدارية المصرية 2026.
+نوع التصرف المطلوب توليده هو: (${disposal}).
+قواعد التوليد الصارمة:
+1- طبق حصراً قانون الخدمة المدنية رقم 81 لسنة 2016 ولائحته التنفيذية رقم 1216 لسنة 2017، ولا تذكر القانون 47 لسنة 1978.
+2- إذا كان التصرف (حفظ قطعي أو حفظ مؤقت): لا تضع قيداً أو وصفاً (بدون قيد ووصف إعمالاً للمادة 214 من التعليمات)، واكتب الحيثية القانونية والمنطوق الختامي المناسب.
+3- إذا كان التصرف (حفظ قطعي لعدم الأهمية): استعرض ثبوت المخالفة ومبررات التغاضي لهوان أثرها، وضع القيد والوصف الكامل بالمواد المؤثمة.
+4- إذا كان التصرف (مجازاة إدارية): ضع القيد والوصف ومواد الإسناد شاملة المادة 58/1 ق 81/2016 وسلطة التوقيع.
+5- إذا كان التصرف (إحالة للمحكمة): ضع القيد والوصف ومواد الإحالة (م 14 ق 117/1958 والمادتين 15/أولاً، 19/1 ق 47/1972) مع نموذج تقرير الاتهام وقائمة أدلة الثبوت.`;
+
                     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: `${systemPrompt}\n\nالنظام: ${law}\nالواقعة: ${text}` }] }] })
+                        body: JSON.stringify({ contents: [{ parts: [{ text: `${systemPrompt}\n\nبيانات القضية والواقعة: ${text}` }] }] })
                     });
                     const data = await res.json();
                     const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
                     if (reply) {
                         outBox.innerText = reply;
-                        document.getElementById('qaydSectorBadge').innerText = "Gemini 1.5 Flash AI ✨";
+                        document.getElementById('qaydSectorBadge').innerText = `تصرف: ${disposal} (Gemini Flash)`;
                         btn.disabled = false;
-                        btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> صياغة سريعة بـ Flash AI`;
+                        btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> توليد بالـ AI`;
                         return;
                     }
                 } catch (e) { console.warn("Flash API fallback:", e); }
             }
 
-            outBox.innerText = `【 الصياغة القانونية المقترحة (محرك القواعد المدمج) 】\n\nقيد الواقعة بالمواد (57، 58/1، 60، 61) من قانون الخدمة المدنية 81 لسنة 2016 ضد المتهم...\n\nلأنه بدائرة عمله بوصفه الوظيفي تقاعس عن أداء العمل المنوط به بدقة بأن: (${text}).`;
-            document.getElementById('qaydSectorBadge').innerText = "محرك القواعد المدمج";
+            // محرك القواعد الاحتياطي المدمج حسب التصرف المختار
+            let generatedResult = "";
+            if (disposal === 'hifz_qat'i) {
+                generatedResult = `【 مـذكـرة تـصـرّف: حـفـظ قـطـعـي (لعدم الصحة / عدم المخالفة) 】\n\nوحيث إن الواقعة تخلص فيما نسب إلى المذكور، وإذ خلت الأوراق من الدليل القطعي أو ثبت أن الفعل لا يشكل ذنباً إدارياً...\n\nلـــــــــذلـــــــــك نـــــــــرى:\nحفظ ما نُسب إلى المذكور قطعياً لعدم الصحة (أو لعدم المخالفة) وحفظ الأوراق إدارياً.`;
+            } else if (disposal === 'hifz_muwaqat') {
+                generatedResult = `【 مـذكـرة تـصـرّف: حـفـظ مـؤقّـت (لعدم كفاية الأدلة) 】\n\nوحيث إن التحقيقات لم تسفر عن ثمة دليل كافٍ يقطع بقيام مسؤولية المعروض أمره، والأمر يدور في فلك الشك والتخمين...\n\nلـــــــــذلـــــــــك نـــــــــرى:\nحفظ ما أُسند إلى المذكور مؤقتاً لعدم كفاية الأدلة.`;
+            } else if (disposal === 'hifz_adam_ahamia') {
+                generatedResult = `【 مـذكـرة تـصـرّف: حـفـظ قـطـعـي لـعـدم الـأهـمـيـة (بعد المواجهة والثبوت) 】\n\nأولاً: قيد الواقعة مخالفة إدارية بالمواد (57، 58/1، 60، 61) من قانون الخدمة المدنية 81 لسنة 2016 ضد المتهم.\n\nثانياً: ولما كانت المخالفة ثابتة ولكنها هيئة الأثر وتدارك أثرها...\n\nلـــــــــذلـــــــــك نـــــــــرى:\nحفظ ما نُسب إلى المذكور قطعياً لعدم الأهمية اكتفاءً بلفت نظره.`;
+            } else if (disposal === 'mujazاة') {
+                generatedResult = `【 مـذكـرة تـصـرّف: مـجـازاة إداريـة 】\n\nأولاً: قيد الواقعة مخالفة إدارية بالمواد (57، 58/1، 60، 61) من قانون الخدمة المدنية 81 لسنة 2016 ضد المتهم بسبب تقاعسه عن أداء العمل.\n\nلـــــــــذلـــــــــك نـــــــــرى:\nمجازاة المخالف المذكور إدارياً في ضوء نص المادة (62) من قانون الخدمة المدنية.`;
+            } else {
+                generatedResult = `【 مـذكـرة تـصـرّف وإحـالـة لـلـمـحـكـمـة 】\n\nأولاً: قيد الواقعة مخالفة إدارية ومالية بالمواد (57، 58/1، 60، 61) من قانون الخدمة المدنية 81 لسنة 2016، والمادة (14) من القانون 117 لسنة 1958، والمادتين (15/أولاً، 19/1) من قانون مجلس الدولة 47 لسنة 1972 ضد المتهم.\n\nلـــــــــذلـــــــــك نـــــــــرى:\nإحالة المتهم إلى المحكمة التأديبية لإعمال شؤونها في مواجهته.`;
+            }
+
+            outBox.innerText = generatedResult;
+            document.getElementById('qaydSectorBadge').innerText = `تصرف: ${disposal} (القواعد المدمج)`;
             btn.disabled = false;
-            btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> صياغة سريعة بـ Flash AI`;
+            btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> توليد بالـ AI`;
         };
 
         window.saveSystemSettings = async function() {
@@ -821,8 +919,8 @@
                             <div class="flex justify-between items-start gap-2 mb-3">
                                 <span class="bg-judicial-900 text-judicial-gold text-[10px] font-extrabold px-2.5 py-1 rounded-full">${b.category}</span>
                                 <div class="flex gap-1">
-                                    ${canEdit ? `<button onclick="openItemEditor('library', '${b.id}')" class="text-amber-600 px-2 text-xs"><i class="fa-solid fa-pen"></i></button>` : ''}
-                                    ${canDel ? `<button onclick="deleteItem('library', '${b.id}')" class="text-red-600 px-2 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
+                                    ${canEdit ? `<button onclick="openItemEditor('library', '${b.id}')" class="text-amber-600 px-2 text-xs" title="تعديل"><i class="fa-solid fa-pen"></i></button>` : ''}
+                                    ${canDel ? `<button onclick="deleteItem('library', '${b.id}')" class="text-red-600 px-2 text-xs" title="حذف"><i class="fa-solid fa-trash"></i></button>` : ''}
                                 </div>
                             </div>
                             <h3 class="font-bold text-judicial-900 text-sm leading-snug mb-2">${b.title}</h3>
@@ -851,8 +949,8 @@
                     <div class="p-3 bg-white rounded-xl border flex justify-between items-center gap-2 text-xs">
                         <div><div class="font-bold">${b.title}</div><div class="text-[10px] text-slate-500">${b.author}</div></div>
                         <div class="flex gap-1">
-                            <button onclick="openItemEditor('library', '${b.id}')" class="bg-amber-100 text-amber-800 px-2.5 py-1 rounded font-bold">تعديل/رابط</button>
-                            <button onclick="deleteItem('library', '${b.id}')" class="bg-red-100 text-red-600 px-2 py-1 rounded"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="openItemEditor('library', '${b.id}')" class="bg-amber-100 text-amber-800 px-2.5 py-1 rounded font-bold">تعديل</button>
+                            <button onclick="deleteItem('library', '${b.id}')" class="bg-red-100 text-red-600 px-2.5 py-1 rounded"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                 `).join('');
@@ -870,38 +968,12 @@
         }
         window.selectSector = sec => { currentSector = sec; refreshAllUI(); };
 
-        function renderJurisdictions() {
-            document.getElementById('jurisdictionContainer').innerHTML = filterByCurrentSector(db.jurisdictions).map(j => `
-                <div class="bg-white p-5 rounded-xl shadow-sm border flex flex-col justify-between searchable-card">
-                    <div>
-                        <div class="flex justify-between items-start gap-2 mb-2 border-b pb-2"><span class="bg-judicial-900 text-judicial-gold text-[11px] font-bold px-2.5 py-0.5 rounded">${j.category}</span></div>
-                        <h3 class="font-bold text-judicial-900 text-sm mb-2">${j.title}</h3>
-                        <p class="text-xs text-slate-700 leading-relaxed bg-slate-50 p-3 rounded-lg border">${j.content}</p>
-                    </div>
-                    <div class="mt-3 pt-2 border-t flex justify-between items-center text-[11px] text-slate-500"><span>${j.ref}</span><button onclick="addToBasket('${j.title}', \`${j.content}\`)" class="text-judicial-900 font-bold hover:underline">+ للمسودة</button></div>
-                </div>
-            `).join('');
-        }
-
-        function renderRegulationsSection() {
-            document.getElementById('regulationsContainer').innerHTML = filterByCurrentSector(db.regulations).map((r, idx) => `
-                <div class="bg-white p-5 rounded-xl shadow-sm border flex flex-col justify-between searchable-card">
-                    <div>
-                        <div class="border-b pb-2 mb-3 flex justify-between items-start">
-                            <div><span class="text-[11px] font-bold text-judicial-gold bg-judicial-900 px-2.5 py-0.5 rounded">${r.number}</span><h3 class="font-bold text-judicial-900 text-sm mt-2">${r.title}</h3></div>
-                        </div>
-                        <div id="reg-text-${idx}" class="space-y-2 text-xs text-slate-700 leading-relaxed">${r.articles.map(a => `<p class="p-2.5 bg-slate-50 rounded border">${a}</p>`).join('')}</div>
-                    </div>
-                    <div class="mt-4 pt-3 border-t flex justify-end"><button onclick="addToBasket('${r.title}', document.getElementById('reg-text-${idx}').innerText)" class="bg-judicial-gold text-judicial-950 text-xs font-extrabold px-3 py-1.5 rounded-lg">+ إرفاق بالمسودة</button></div>
-                </div>
-            `).join('');
-        }
-
         window.renderDefensesSection = function() {
             const catFilter = document.getElementById('defCategoryFilter')?.value || "الكل";
             let list = filterByCurrentSector(db.defenses);
             if (catFilter !== "الكل") list = list.filter(d => d.category === catFilter);
             const approved = isApprovedMember();
+            const canEdit = hasPerm('edit'), canDel = hasPerm('delete');
 
             document.getElementById('defensesContainer').innerHTML = list.map((d, index) => {
                 const preview = d.response.substring(0, 115) + "... ";
@@ -909,8 +981,14 @@
                 return `
                     <div class="bg-white p-5 rounded-xl shadow-sm border searchable-card">
                         <div class="flex justify-between items-start gap-2 mb-3 border-b pb-2">
-                            <span class="bg-judicial-900 text-judicial-gold text-[11px] font-bold px-2.5 py-0.5 rounded">${d.category}</span>
-                            <h3 class="font-bold text-judicial-900 text-sm">${d.title}</h3>
+                            <div class="flex items-center gap-2">
+                                <span class="bg-judicial-900 text-judicial-gold text-[11px] font-bold px-2.5 py-0.5 rounded">${d.category}</span>
+                                <h3 class="font-bold text-judicial-900 text-sm">${d.title}</h3>
+                            </div>
+                            <div class="flex gap-1">
+                                ${canEdit ? `<button onclick="openItemEditor('defense', '${d.id}')" class="text-amber-600 px-2 text-xs"><i class="fa-solid fa-pen"></i></button>` : ''}
+                                ${canDel ? `<button onclick="deleteItem('defense', '${d.id}')" class="text-red-600 px-2 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
+                            </div>
                         </div>
                         ${approved ? `
                             <p id="def-text-${index}" class="text-slate-800 font-serif text-lg leading-relaxed bg-slate-50 p-4 rounded-lg border mb-3 whitespace-pre-line">${d.response}</p>
@@ -929,7 +1007,9 @@
         function renderChecklistsSection() {
             const list = filterByCurrentSector(db.checklists);
             const sel = document.getElementById('checklistSelector');
+            const prevVal = sel.value;
             sel.innerHTML = list.length ? list.map(c => `<option value="${c.id}">[${c.sector}] ${c.title}</option>`).join('') : `<option value="">لا توجد قوائم</option>`;
+            if (list.some(c => c.id === prevVal)) sel.value = prevVal;
             renderSelectedChecklist();
         }
 
@@ -946,6 +1026,26 @@
             `;
             updateProgress();
         };
+
+        function renderFormsSection() {
+            const list = filterByCurrentSector(db.forms || []);
+            const canEdit = hasPerm('edit'), canDel = hasPerm('delete');
+            document.getElementById('formsContainer').innerHTML = list.map(f => `
+                <div class="bg-white p-5 rounded-xl shadow-sm border flex flex-col justify-between searchable-card">
+                    <div>
+                        <div class="flex justify-between items-start gap-2 mb-2 border-b pb-2"><span class="bg-judicial-900 text-judicial-gold text-[10px] font-bold px-2 py-0.5 rounded">${f.sector}</span>
+                        <div class="flex gap-1">${canEdit ? `<button onclick="openItemEditor('form', '${f.id}')" class="text-amber-600 px-1 text-xs"><i class="fa-solid fa-pen"></i></button>` : ''}${canDel ? `<button onclick="deleteItem('form', '${f.id}')" class="text-red-600 px-1 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}</div></div>
+                        <h3 class="font-bold text-judicial-900 text-sm mb-2">${f.title}</h3>
+                        <p class="text-xs text-slate-700 font-mono bg-slate-50 p-3 rounded-lg border whitespace-pre-line">${f.content}</p>
+                    </div>
+                    <div class="mt-3 pt-2 border-t flex justify-end gap-2">
+                        <button onclick="copyText('form-txt-${f.id}')" class="bg-judicial-900 text-white px-3 py-1 rounded text-xs font-bold">نسخ النموذج</button>
+                        <button onclick="addToBasket('${f.title}', \`${f.content}\`)" class="bg-judicial-gold text-judicial-950 px-3 py-1 rounded text-xs font-extrabold">+ للمسودة</button>
+                    </div>
+                    <div id="form-txt-${f.id}" class="hidden">${f.content}</div>
+                </div>
+            `).join('');
+        }
 
         function renderQaydsSection() {
             const list = filterByCurrentSector(db.qayds);
@@ -965,24 +1065,31 @@
             document.getElementById('qaydOutput').innerText = `${qObj.articles}\n\n【 الـوصـف والـقـيـد 】\n${qObj.wasf.replace(/{{الاسم}}/g, name).replace(/{{التاريخ}}/g, date).replace(/{{الواقعة}}/g, prop)}`;
         };
 
-        function renderMembersTable() {
+        window.renderMembersTable = function() {
             const pendingCount = db.members.filter(m => m.status === 'pending').length;
             document.getElementById('pendingMembersCount').innerText = pendingCount;
             document.getElementById('membersTableBody').innerHTML = db.members.map(m => {
                 const isSuper = m.role === 'super_admin';
                 return `
                     <tr class="${m.status === 'pending' ? 'bg-amber-50' : 'hover:bg-slate-50'}">
-                        <td class="p-3"><div class="font-bold">${m.name}</div><div class="text-[10px] text-slate-500">${m.title || ''} | ${m.workplace || ''}</div></td>
+                        <td class="p-3"><div class="font-bold">${m.name}</div><div class="text-[10px] text-slate-500">${m.workplace || ''}</div></td>
+                        <td class="p-3 text-xs"><input type="text" id="title_${m.id}" value="${m.title || 'معاون نيابة إدارية'}" class="border rounded p-1 text-xs font-bold w-full bg-slate-50"></td>
                         <td class="p-3 text-xs"><div class="font-bold text-emerald-800">${m.phone || '-'}</div><div class="font-mono text-slate-400">User: ${m.username}</div></td>
                         <td class="p-3">${m.status === 'pending' ? '<span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-bold">⏳ قيد المراجعة</span>' : '<span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">✅ معتمد</span>'}</td>
-                        <td class="p-3">${isSuper ? 'مدير المنصة' : `<select id="role_${m.id}" class="border rounded p-1 text-xs"><option value="member" ${m.role==='member'?'selected':''}>عضو</option><option value="moderator" ${m.role==='moderator'?'selected':''}>مشرف</option></select>`}</td>
-                        <td class="p-3 text-center">${isSuper ? '-' : `<div class="flex justify-center gap-1">${m.status==='pending'?`<button onclick="setMemberStatus('${m.id}','approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px] font-bold">قبول</button>`:''}<button onclick="deleteMember('${m.id}')" class="bg-red-100 text-red-600 px-2 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button></div>`}</td>
+                        <td class="p-3 text-center">${isSuper ? '-' : `<div class="flex justify-center gap-1">${m.status==='pending'?`<button onclick="setMemberStatus('${m.id}','approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px] font-bold">قبول</button>`:''}<button onclick="saveMemberTitle('${m.id}')" class="bg-judicial-900 text-judicial-gold px-2 py-1 rounded text-[10px] font-bold">حفظ الصفة</button><button onclick="deleteMember('${m.id}')" class="bg-red-100 text-red-600 px-2 py-1 rounded text-[10px]"><i class="fa-solid fa-trash"></i></button></div>`}</td>
                     </tr>
                 `;
             }).join('');
         }
 
         window.setMemberStatus = async (id, st) => { const m = db.members.find(x => x.id === id); if(m){ m.status = st; await persistState("تفعيل عضو", "الأعضاء", m.name); } };
+        window.saveMemberTitle = async (id) => {
+            const m = db.members.find(x => x.id === id);
+            if (!m) return;
+            m.title = document.getElementById(`title_${id}`).value.trim() || "معاون نيابة إدارية";
+            await persistState("تعديل صفة عضو", "الأعضاء", `${m.name} -> ${m.title}`);
+            alert("تم تحديث وحفظ الصفة والدرجة الوظيفية بنجاح!");
+        };
         window.deleteMember = async id => { if(confirm("حذف الحساب؟")) { db.members = db.members.filter(x => x.id !== id); await persistState("حذف عضو", "الأعضاء", id); } };
 
         window.openItemEditor = function(type, editId = null) {
@@ -1010,28 +1117,22 @@
                 bodyEl.innerHTML = `<div class="grid grid-cols-2 gap-2"><div>القطاع:<select id="ed_sector" class="w-full border rounded p-1.5">${sectorOptions}</select></div><div>التصنيف:<input type="text" id="ed_category" value="${item.category}" class="w-full border rounded p-1.5"></div></div><div>العنوان:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5"></div><div>النص:<textarea id="ed_response" rows="4" class="w-full border rounded p-1.5">${item.response}</textarea></div><div>السند:<input type="text" id="ed_ref" value="${item.ref}" class="w-full border rounded p-1.5"></div><input type="hidden" id="ed_contrib" value="${item.contributor}">`;
                 document.getElementById('ed_sector').value = item.sector;
             }
-            else if (type === 'jurisdiction') {
-                const item = editId ? db.jurisdictions.find(j => j.id === editId) : { sector: "الكل", category: "اختصاص ولائي", title: "", content: "", ref: "" };
-                titleEl.innerText = "قاعدة اختصاص";
-                bodyEl.innerHTML = `<div>القطاع:<select id="ed_sector" class="w-full border rounded p-1.5">${sectorOptions}</select></div><div>العنوان:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5"></div><div>المحتوى:<textarea id="ed_content" rows="3" class="w-full border rounded p-1.5">${item.content}</textarea></div><div>السند:<input type="text" id="ed_ref" value="${item.ref}" class="w-full border rounded p-1.5"></div>`;
-                document.getElementById('ed_sector').value = item.sector;
-            }
             else if (type === 'checklist') {
                 const item = editId ? db.checklists.find(c => c.id === editId) : { sector: db.sectors[1], title: "", docs: [], witness_q: [], accused_q: [], tips: [] };
-                titleEl.innerText = "قائمة فحص";
-                bodyEl.innerHTML = `<div>القطاع:<select id="ed_sector" class="w-full border rounded p-1.5">${sectorOptions}</select></div><div>العنوان:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5"></div><div>المستندات:<textarea id="ed_docs" rows="2" class="w-full border rounded p-1.5">${item.docs.join('\n')}</textarea></div><div>أسئلة الشهود:<textarea id="ed_witness" rows="2" class="w-full border rounded p-1.5">${item.witness_q.join('\n')}</textarea></div><div>أسئلة المواجهة:<textarea id="ed_accused" rows="2" class="w-full border rounded p-1.5">${item.accused_q.join('\n')}</textarea></div><div>ضوابط فنية:<textarea id="ed_tips" rows="2" class="w-full border rounded p-1.5">${item.tips.join('\n')}</textarea></div>`;
+                titleEl.innerText = "قائمة فحص وتجنب مآخذ";
+                bodyEl.innerHTML = `<div>القطاع:<select id="ed_sector" class="w-full border rounded p-1.5">${sectorOptions}</select></div><div>العنوان:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5"></div><div>المستندات:<textarea id="ed_docs" rows="2" class="w-full border rounded p-1.5">${item.docs.join('\n')}</textarea></div><div>أسئلة الشهود:<textarea id="ed_witness" rows="2" class="w-full border rounded p-1.5">${item.witness_q.join('\n')}</textarea></div><div>أسئلة المواجهة:<textarea id="ed_accused" rows="2" class="w-full border rounded p-1.5">${item.accused_q.join('\n')}</textarea></div><div>ضوابط فنية لتجنب المآخذ:<textarea id="ed_tips" rows="2" class="w-full border rounded p-1.5">${item.tips.join('\n')}</textarea></div>`;
+                document.getElementById('ed_sector').value = item.sector;
+            }
+            else if (type === 'form') {
+                const item = editId ? db.forms.find(f => f.id === editId) : { sector: currentSector, title: "", content: "" };
+                titleEl.innerText = "نموذج إجرائي";
+                bodyEl.innerHTML = `<div>القطاع:<select id="ed_sector" class="w-full border rounded p-1.5">${sectorOptions}</select></div><div>عنوان النموذج:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5"></div><div>نص الصيغة والنموذج:<textarea id="ed_content" rows="5" class="w-full border rounded p-1.5 font-mono">${item.content}</textarea></div>`;
                 document.getElementById('ed_sector').value = item.sector;
             }
             else if (type === 'qayd') {
                 const item = editId ? db.qayds.find(q => q.id === editId) : { sector: db.sectors[1], title: "", wasf: "لأنه تقاعس...", articles: "المواد المؤثمة." };
-                titleEl.innerText = "قالب قيد";
+                titleEl.innerText = "قالب قيد ووصف";
                 bodyEl.innerHTML = `<div>القطاع:<select id="ed_sector" class="w-full border rounded p-1.5">${sectorOptions}</select></div><div>اسم القالب:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5"></div><div>مواد الإسناد:<textarea id="ed_articles" rows="2" class="w-full border rounded p-1.5">${item.articles}</textarea></div><div>الوصف:<textarea id="ed_wasf" rows="3" class="w-full border rounded p-1.5">${item.wasf}</textarea></div>`;
-                document.getElementById('ed_sector').value = item.sector;
-            }
-            else if (type === 'regulation') {
-                const item = editId ? db.regulations.find(r => r.id === editId) : { sector: currentSector, number: "", title: "", articles: [] };
-                titleEl.innerText = "تشريع أو فتوى";
-                bodyEl.innerHTML = `<div>القطاع:<select id="ed_sector" class="w-full border rounded p-1.5">${sectorOptions}</select></div><div>الرقم:<input type="text" id="ed_number" value="${item.number}" class="w-full border rounded p-1.5"></div><div>العنوان:<input type="text" id="ed_title" value="${item.title}" class="w-full border rounded p-1.5"></div><div>المواد:<textarea id="ed_articles" rows="4" class="w-full border rounded p-1.5">${item.articles.join('\n')}</textarea></div>`;
                 document.getElementById('ed_sector').value = item.sector;
             }
             toggleModal('itemEditorModal');
@@ -1053,25 +1154,20 @@
                 if (editId) db.defenses[db.defenses.findIndex(d => d.id === editId)] = obj; else db.defenses.unshift(obj);
                 await persistState("تعديل/إضافة", "الحيثيات", title);
             }
-            else if (type === 'jurisdiction') {
-                const obj = { id: editId || "jur_" + Date.now(), sector, category: document.getElementById('ed_category').value, title, content: document.getElementById('ed_content').value.trim(), ref: document.getElementById('ed_ref').value.trim() };
-                if (editId) db.jurisdictions[db.jurisdictions.findIndex(j => j.id === editId)] = obj; else db.jurisdictions.unshift(obj);
-                await persistState("تعديل/إضافة", "الاختصاص", title);
-            }
             else if (type === 'checklist') {
                 const obj = { id: editId || "chk_" + Date.now(), sector, title, docs: document.getElementById('ed_docs').value.split('\n').map(s=>s.trim()).filter(Boolean), witness_q: document.getElementById('ed_witness').value.split('\n').map(s=>s.trim()).filter(Boolean), accused_q: document.getElementById('ed_accused').value.split('\n').map(s=>s.trim()).filter(Boolean), tips: document.getElementById('ed_tips').value.split('\n').map(s=>s.trim()).filter(Boolean) };
                 if (editId) db.checklists[db.checklists.findIndex(c => c.id === editId)] = obj; else db.checklists.unshift(obj);
                 await persistState("تعديل/إضافة", "قوائم الفحص", title);
             }
+            else if (type === 'form') {
+                const obj = { id: editId || "form_" + Date.now(), sector, title, content: document.getElementById('ed_content').value.trim() };
+                if (editId) db.forms[db.forms.findIndex(f => f.id === editId)] = obj; else db.forms.unshift(obj);
+                await persistState("تعديل/إضافة", "النماذج الإجرائية", title);
+            }
             else if (type === 'qayd') {
                 const obj = { id: editId || "q_" + Date.now(), sector, title, wasf: document.getElementById('ed_wasf').value.trim(), articles: document.getElementById('ed_articles').value.trim() };
                 if (editId) db.qayds[db.qayds.findIndex(q => q.id === editId)] = obj; else db.qayds.unshift(obj);
                 await persistState("تعديل/إضافة", "القيود", title);
-            }
-            else if (type === 'regulation') {
-                const obj = { id: editId || "reg_" + Date.now(), sector, number: document.getElementById('ed_number').value.trim(), title, articles: document.getElementById('ed_articles').value.split('\n').map(s => s.trim()).filter(Boolean) };
-                if (editId) db.regulations[db.regulations.findIndex(r => r.id === editId)] = obj; else db.regulations.unshift(obj);
-                await persistState("تعديل/إضافة", "التشريعات", title);
             }
             toggleModal('itemEditorModal');
         };
@@ -1080,8 +1176,7 @@
             if (!hasPerm('delete') || !confirm("حذف العنصر؟")) return;
             if (type === 'library') db.library = db.library.filter(b => b.id !== id);
             if (type === 'defense') db.defenses = db.defenses.filter(d => d.id !== id);
-            if (type === 'jurisdiction') db.jurisdictions = db.jurisdictions.filter(j => j.id !== id);
-            if (type === 'regulation') db.regulations = db.regulations.filter(r => r.id !== id);
+            if (type === 'form') db.forms = db.forms.filter(f => f.id !== id);
             await persistState("حذف", type, id);
         };
 
@@ -1091,7 +1186,7 @@
         window.deleteCurrentQayd = async () => { if (!hasPerm('delete')) return; const id = document.getElementById('qaydSelector').value; if (id && confirm("حذف القالب؟")) { db.qayds = db.qayds.filter(q => q.id !== id); await persistState("حذف", "القيود", id); } };
 
         window.openSectorManager = async function() {
-            const act = prompt(`القطاعات الحالية: ${db.sectors.join(' - ')}\n\nاكتب اسم قطاع جديد لإضافته أو -قبل الاسم لحذفه:`);
+            const act = prompt(`القطاعات الحالية: ${db.sectors.join(' - ')}\n\nاكتب اسم قطاع جديد لإضافته أو -قبل الاسم للحذف:`);
             if (!act) return;
             const t = act.trim();
             if (t.startsWith('-')) { const d = t.substring(1).trim(); if(d!=='الكل') db.sectors = db.sectors.filter(s => s !== d); }
@@ -1103,10 +1198,9 @@
             updateHybridAndAuthUI();
             renderSectorsBar();
             renderLibrarySection();
-            renderJurisdictions();
-            renderRegulationsSection();
             renderDefensesSection();
             renderChecklistsSection();
+            renderFormsSection();
             renderQaydsSection();
             renderMembersTable();
             renderPendingContributions();
